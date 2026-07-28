@@ -1,6 +1,6 @@
   import React, { useState } from "react";
 
-const Header = () => {
+const Header1 = () => {
   const [activeTab, setActiveTab] = useState("Անհատ");
 
   // xlOnly-n el petq chi, qani vor misht 1920px enq nayum
@@ -114,4 +114,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Header1;

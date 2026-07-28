@@ -1,9 +1,9 @@
-import Header from "../../Components/Header";
+import ParentHeader from "../../Components/ParentHeader";
 
 const HomePage = () => {
   return (
     <>
-      <Header></Header>
+      <ParentHeader></ParentHeader>
     </>
   );
 };
