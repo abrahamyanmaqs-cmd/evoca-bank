@@ -1,10 +1,14 @@
-import ParentHeader from "../../Components/ParentHeader";
+ import React from 'react';
+import ParentHeader from '../../Components/ParentHeader';
+import Hero from './Components/Hero';
 
 const HomePage = () => {
   return (
-    <>
-      <ParentHeader></ParentHeader>
-    </>
+    <div className="min-h-screen bg-white">
+      <ParentHeader />
+      <Hero />
+    </div>
   );
 };
+
 export default HomePage;
