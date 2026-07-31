@@ -9,6 +9,7 @@ import OnlineBankingBanner from './Components/BankingBanner';
 import PartnersSection from './Components/FamousBrands';
 import FirebaseNewsSection from './Components/NewsSection';
 import CurrencyAndBranchesSection from './Components/CurrencyAndBranchesSection';
+import TestimonialSection from './Components/TestimontalSection';
 
 const HomePage = () => {
   return (
@@ -23,6 +24,7 @@ const HomePage = () => {
       <PartnersSection></PartnersSection>
       <FirebaseNewsSection></FirebaseNewsSection>
       <CurrencyAndBranchesSection></CurrencyAndBranchesSection>
+      <TestimonialSection></TestimonialSection>
     </div>
   );
 };
