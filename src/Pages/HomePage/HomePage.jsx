@@ -6,6 +6,7 @@ import BestFromEvoca from './Components/BestFromEvoca';
 import CardSlider from './Components/CardSlider';
 import Calculators from './Components/Calculators';
 import OnlineBankingBanner from './Components/BankingBanner';
+import PartnersSection from './Components/FamousBrands';
 
 const HomePage = () => {
   return (
@@ -17,6 +18,7 @@ const HomePage = () => {
       <CardSlider></CardSlider>
       <Calculators></Calculators>
       <OnlineBankingBanner></OnlineBankingBanner>
+      <PartnersSection></PartnersSection>
     </div>
   );
 };
