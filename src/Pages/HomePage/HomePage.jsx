@@ -5,6 +5,7 @@ import BiometricSection from './Components/BiometricSection';
 import BestFromEvoca from './Components/BestFromEvoca';
 import CardSlider from './Components/CardSlider';
 import Calculators from './Components/Calculators';
+import OnlineBankingBanner from './Components/BankingBanner';
 
 const HomePage = () => {
   return (
@@ -15,6 +16,7 @@ const HomePage = () => {
       <BestFromEvoca></BestFromEvoca>
       <CardSlider></CardSlider>
       <Calculators></Calculators>
+      <OnlineBankingBanner></OnlineBankingBanner>
     </div>
   );
 };

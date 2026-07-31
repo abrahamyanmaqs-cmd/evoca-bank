@@ -19,146 +19,156 @@ export default function Calculators() {
   };
 
   return (
-    <section className="bg-[#F2F5FA] py-16 px-4 md:px-12 min-h-screen flex flex-col items-center select-none">
-      <div className="max-w-[1000px] w-full mx-auto">
-        
-        {/* Վերնագիր */}
-        <h2 className="text-3xl md:text-4xl font-extrabold text-[#1C1C1E] mb-8 text-left">
-          Հաշվիչներ
-        </h2>
+    <>
+      {/* Ներմուծում ենք Montserrat տառատեսակը ուղղակիորեն */}
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
+        .font-montserrat {
+          font-family: 'Montserrat', sans-serif;
+        }
+      `}</style>
 
-        {/* Գլխավոր Քարտ */}
-        <div className="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-gray-100">
+      <section className="bg-[#F2F5FA] py-20 px-4 md:px-12 min-h-screen flex flex-col items-center select-none font-montserrat">
+        <div className="max-w-[1280px] w-full mx-auto">
           
-          {/* Վերևի Tab-եր */}
-          <div className="flex space-x-8 border-b border-gray-200 mb-8">
-            <button
-              onClick={() => setActiveTab('loan')}
-              className={`pb-3 text-base font-bold transition-all relative cursor-pointer ${
-                activeTab === 'loan'
-                  ? 'text-[#1C1C1E] border-b-2 border-[#5E2BFF]'
-                  : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Վարկ
-            </button>
-            <button
-              onClick={() => setActiveTab('deposit')}
-              className={`pb-3 text-base font-bold transition-all relative cursor-pointer ${
-                activeTab === 'deposit'
-                  ? 'text-[#1C1C1E] border-b-2 border-[#5E2BFF]'
-                  : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
-              Ավանդ
-            </button>
+          {/* Վերնագիր */}
+          <h2 className="text-[34px] font-bold text-[#1C1C1E] mb-8 text-left">
+            Հաշվիչներ
+          </h2>
+
+          {/* Գլխավոր Քարտ */}
+          <div className="bg-white rounded-2xl shadow-sm p-6 md:p-10 border border-gray-100">
+            
+            {/* Վերևի Tab-եր */}
+            <div className="flex space-x-8 border-b border-gray-200 mb-8">
+              <button
+                onClick={() => setActiveTab('loan')}
+                className={`pb-3 text-base font-bold transition-all relative cursor-pointer ${
+                  activeTab === 'loan'
+                    ? 'text-[#1C1C1E] border-b-2 border-[#5E2BFF]'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                Վարկ
+              </button>
+              <button
+                onClick={() => setActiveTab('deposit')}
+                className={`pb-3 text-base font-bold transition-all relative cursor-pointer ${
+                  activeTab === 'deposit'
+                    ? 'text-[#1C1C1E] border-b-2 border-[#5E2BFF]'
+                    : 'text-gray-400 hover:text-gray-600'
+                }`}
+              >
+                Ավանդ
+              </button>
+            </div>
+
+            {/* ՎԱՐԿԻ ԲԱԺԻՆ */}
+            {activeTab === 'loan' && (
+              <form onSubmit={handleCalculate} className="space-y-6">
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  
+                  {/* 1. Վարկի գումար */}
+                  <div className="bg-[#FAFAFC] border border-gray-200 rounded-xl p-4 flex flex-col justify-between">
+                    <span className="text-sm text-gray-500 font-medium mb-1">Վարկի գումար</span>
+                    <div className="flex items-center justify-between">
+                      <input
+                        type="text"
+                        value={loanAmount}
+                        onChange={(e) => setLoanAmount(e.target.value.replace(/\D/g, ''))}
+                        className="w-full text-xl font-bold text-[#1C1C1E] bg-transparent outline-none focus:ring-0"
+                      />
+                      <span className="text-sm font-semibold text-gray-400 ml-2">AMD</span>
+                    </div>
+                  </div>
+
+                  {/* 2. Ժամկետ */}
+                  <div className="bg-[#FAFAFC] border border-gray-200 rounded-xl p-4 flex flex-col justify-between">
+                    <span className="text-sm text-gray-500 font-medium mb-1">Ժամկետ</span>
+                    <div className="flex items-center justify-between">
+                      <input
+                        type="text"
+                        value={loanTerm}
+                        onChange={(e) => setLoanTerm(e.target.value.replace(/\D/g, ''))}
+                        className="w-full text-xl font-bold text-[#1C1C1E] bg-transparent outline-none focus:ring-0"
+                      />
+                      <span className="text-sm font-semibold text-gray-400 ml-2">ամիս</span>
+                    </div>
+                  </div>
+
+                  {/* 3. Տարեկան տոկոսադրույք */}
+                  <div className="bg-[#FAFAFC] border border-gray-200 rounded-xl p-4 flex flex-col justify-between">
+                    <span className="text-sm text-gray-500 font-medium mb-1">Տարեկան տոկոսադրույք</span>
+                    <div className="flex items-center justify-between">
+                      <input
+                        type="text"
+                        value={interestRate}
+                        onChange={(e) => setInterestRate(e.target.value.replace(/[^0-9.]/g, ''))}
+                        className="w-full text-xl font-bold text-[#1C1C1E] bg-transparent outline-none focus:ring-0"
+                      />
+                      <span className="text-sm font-semibold text-gray-400 ml-2">%</span>
+                    </div>
+                  </div>
+
+                  {/* 4. Մարման ձև */}
+                  <div className="bg-[#FAFAFC] border border-gray-200 rounded-xl p-4 flex flex-col justify-center">
+                    <span className="text-xs text-gray-400 mb-3 font-medium">Մարման ձև</span>
+                    <div className="flex space-x-6">
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="repaymentMethod"
+                          checked={repaymentMethod === 'annuity'}
+                          onChange={() => setRepaymentMethod('annuity')}
+                          className="accent-[#5E2BFF] w-4 h-4"
+                        />
+                        <span className="text-sm font-medium text-[#1C1C1E]">Անուիտետ</span>
+                      </label>
+
+                      <label className="flex items-center space-x-2 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="repaymentMethod"
+                          checked={repaymentMethod === 'differential'}
+                          onChange={() => setRepaymentMethod('differential')}
+                          className="accent-[#5E2BFF] w-4 h-4"
+                        />
+                        <span className="text-sm font-medium text-[#1C1C1E]">Նվազող</span>
+                      </label>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Ներքևի մաս՝ ծանուցում և կոճակ */}
+                <div className="pt-6 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
+                  <p className="text-xs text-gray-400 max-w-xl text-left">
+                    Բոլոր հաշվարկները կրում են մոտավոր բնույթ և չեն հանդիսանում հրապարակային առաջարկ:
+                  </p>
+
+                  <button
+                    type="submit"
+                    className="w-full md:w-auto bg-[#5E2BFF] hover:bg-[#4A1EEB] text-white text-sm font-semibold py-3.5 px-10 rounded-full shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
+                  >
+                    Հաշվել
+                  </button>
+                </div>
+
+              </form>
+            )}
+
+            {/* ԱՎԱՆԴԻ ԲԱԺԻՆ */}
+            {activeTab === 'deposit' && (
+              <div className="py-12 text-center text-gray-400 text-sm">
+                Ավանդների հաշվիչի պարունակությունը...
+              </div>
+            )}
+
           </div>
 
-          {/* ՎԱՐԿԻ ԲԱԺԻՆ */}
-          {activeTab === 'loan' && (
-            <form onSubmit={handleCalculate} className="space-y-6">
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                
-                {/* 1. Վարկի գումար (միայն թվեր) */}
-                <div className="bg-[#FAFAFC] border border-gray-200 rounded-xl p-4 flex flex-col justify-between">
-                  <span className="text-sm text-gray-500 font-medium mb-1">Վարկի գումար</span>
-                  <div className="flex items-center justify-between">
-                    <input
-                      type="text"
-                      value={loanAmount}
-                      onChange={(e) => setLoanAmount(e.target.value.replace(/\D/g, ''))}
-                      className="w-full text-xl font-bold text-[#1C1C1E] bg-transparent outline-none focus:ring-0"
-                    />
-                    <span className="text-sm font-semibold text-gray-400 ml-2">AMD</span>
-                  </div>
-                </div>
-
-                {/* 2. Ժամկետ (միայն թվեր) */}
-                <div className="bg-[#FAFAFC] border border-gray-200 rounded-xl p-4 flex flex-col justify-between">
-                  <span className="text-sm text-gray-500 font-medium mb-1">Ժամկետ</span>
-                  <div className="flex items-center justify-between">
-                    <input
-                      type="text"
-                      value={loanTerm}
-                      onChange={(e) => setLoanTerm(e.target.value.replace(/\D/g, ''))}
-                      className="w-full text-xl font-bold text-[#1C1C1E] bg-transparent outline-none focus:ring-0"
-                    />
-                    <span className="text-sm font-semibold text-gray-400 ml-2">ամիս</span>
-                  </div>
-                </div>
-
-                {/* 3. Տարեկան տոկոսադրույք (թվեր և կետ) */}
-                <div className="bg-[#FAFAFC] border border-gray-200 rounded-xl p-4 flex flex-col justify-between">
-                  <span className="text-sm text-gray-500 font-medium mb-1">Տարեկան տոկոսադրույք</span>
-                  <div className="flex items-center justify-between">
-                    <input
-                      type="text"
-                      value={interestRate}
-                      onChange={(e) => setInterestRate(e.target.value.replace(/[^0-9.]/g, ''))}
-                      className="w-full text-xl font-bold text-[#1C1C1E] bg-transparent outline-none focus:ring-0"
-                    />
-                    <span className="text-sm font-semibold text-gray-400 ml-2">%</span>
-                  </div>
-                </div>
-
-                {/* 4. Մարման ձև */}
-                <div className="bg-[#FAFAFC] border border-gray-200 rounded-xl p-4 flex flex-col justify-center">
-                  <span className="text-xs text-gray-400 mb-3 font-medium">Մարման ձև</span>
-                  <div className="flex space-x-6">
-                    <label className="flex items-center space-x-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="repaymentMethod"
-                        checked={repaymentMethod === 'annuity'}
-                        onChange={() => setRepaymentMethod('annuity')}
-                        className="accent-[#5E2BFF] w-4 h-4"
-                      />
-                      <span className="text-sm font-medium text-[#1C1C1E]">Անուիտետ</span>
-                    </label>
-
-                    <label className="flex items-center space-x-2 cursor-pointer">
-                      <input
-                        type="radio"
-                        name="repaymentMethod"
-                        checked={repaymentMethod === 'differential'}
-                        onChange={() => setRepaymentMethod('differential')}
-                        className="accent-[#5E2BFF] w-4 h-4"
-                      />
-                      <span className="text-sm font-medium text-[#1C1C1E]">Նվազող</span>
-                    </label>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Ներքևի մաս՝ ծանուցում և կոճակ */}
-              <div className="pt-6 border-t border-gray-100 flex flex-col md:flex-row justify-between items-center gap-4">
-                <p className="text-xs text-gray-400 max-w-xl text-left">
-                  Բոլոր հաշվարկները կրում են մոտավոր բնույթ և չեն հանդիսանում հրապարակային առաջարկ:
-                </p>
-
-                <button
-                  type="submit"
-                  className="w-full md:w-auto bg-[#5E2BFF] hover:bg-[#4A1EEB] text-white text-sm font-semibold py-3.5 px-10 rounded-full shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer"
-                >
-                  Հաշվել
-                </button>
-              </div>
-
-            </form>
-          )}
-
-          {/* ԱՎԱՆԴԻ ԲԱԺԻՆ */}
-          {activeTab === 'deposit' && (
-            <div className="py-12 text-center text-gray-400 text-sm">
-              Ավանդների հաշվիչի պարունակությունը...
-            </div>
-          )}
-
         </div>
-
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
