@@ -2,6 +2,8 @@
 import ParentHeader from '../../Components/ParentHeader';
 import Hero from './Components/Hero';
 import BiometricSection from './Components/BiometricSection';
+import BestFromEvoca from './Components/BestFromEvoca';
+import CardSlider from './Components/CardSlider';
 
 const HomePage = () => {
   return (
@@ -9,6 +11,8 @@ const HomePage = () => {
       <ParentHeader />
       <Hero />
       <BiometricSection></BiometricSection>
+      <BestFromEvoca></BestFromEvoca>
+      <CardSlider></CardSlider>
     </div>
   );
 };
