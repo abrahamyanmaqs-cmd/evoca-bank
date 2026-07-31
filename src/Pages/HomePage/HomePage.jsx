@@ -4,6 +4,7 @@ import Hero from './Components/Hero';
 import BiometricSection from './Components/BiometricSection';
 import BestFromEvoca from './Components/BestFromEvoca';
 import CardSlider from './Components/CardSlider';
+import Calculators from './Components/Calculators';
 
 const HomePage = () => {
   return (
@@ -13,6 +14,7 @@ const HomePage = () => {
       <BiometricSection></BiometricSection>
       <BestFromEvoca></BestFromEvoca>
       <CardSlider></CardSlider>
+      <Calculators></Calculators>
     </div>
   );
 };
