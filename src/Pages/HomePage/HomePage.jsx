@@ -8,6 +8,7 @@ import Calculators from './Components/Calculators';
 import OnlineBankingBanner from './Components/BankingBanner';
 import PartnersSection from './Components/FamousBrands';
 import FirebaseNewsSection from './Components/NewsSection';
+import CurrencyAndBranchesSection from './Components/CurrencyAndBranchesSection';
 
 const HomePage = () => {
   return (
@@ -21,6 +22,7 @@ const HomePage = () => {
       <OnlineBankingBanner></OnlineBankingBanner>
       <PartnersSection></PartnersSection>
       <FirebaseNewsSection></FirebaseNewsSection>
+      <CurrencyAndBranchesSection></CurrencyAndBranchesSection>
     </div>
   );
 };
