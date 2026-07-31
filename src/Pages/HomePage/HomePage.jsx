@@ -7,6 +7,7 @@ import CardSlider from './Components/CardSlider';
 import Calculators from './Components/Calculators';
 import OnlineBankingBanner from './Components/BankingBanner';
 import PartnersSection from './Components/FamousBrands';
+import FirebaseNewsSection from './Components/NewsSection';
 
 const HomePage = () => {
   return (
@@ -19,6 +20,7 @@ const HomePage = () => {
       <Calculators></Calculators>
       <OnlineBankingBanner></OnlineBankingBanner>
       <PartnersSection></PartnersSection>
+      <FirebaseNewsSection></FirebaseNewsSection>
     </div>
   );
 };
