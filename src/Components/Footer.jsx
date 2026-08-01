@@ -110,8 +110,8 @@ export default function Footer() {
               <div className="flex flex-col gap-1 text-xs font-bold">
                 <a href="#branches" className="text-[#5E1EEB] hover:underline">Բանկի հասցեները և աշխատաժամերը</a>
                 <a href="#contact" className="text-[#5E1EEB] hover:underline">Կապ մեզ հետ</a>
-                <p className="text-xl font-extrabold text-[#1C1C1E] mt-1">+374 10 605555</p>
-                <p className="text-lg font-extrabold text-[#1C1C1E]">8444</p>
+                <p className="text-xl font-extrabold  text-[#5E1EEB] mt-1">+374 10 605555</p>
+                <p className="text-lg font-extrabold  text-[#5E1EEB]">8444</p>
               </div>
 
             </div>
