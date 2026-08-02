@@ -7,7 +7,7 @@ import HomePage from "./Pages/HomePage/HomePage";
 import Individuals from "./Pages/SecondPage/Individuals";
 import Business from "./Pages/ThirdPage/Business"; // Ներմուծում ենք երրորդ էջը
 import Layout from "./Components/Layout"; 
-
+import Payment from "./Pages/FourthPage/Payment";
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +23,7 @@ function App() {
           
           {/* Բիզնեսի էջը */}
           <Route path="business" element={<Business />} />
+           <Route path="payments" element={<Payment />} />
           
         </Route>
       </Routes>
