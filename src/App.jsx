@@ -5,7 +5,8 @@ import "./App.css";
 // Քո էջերն ու ընդհանուր Layout-ը
 import HomePage from "./Pages/HomePage/HomePage";
 import Individuals from "./Pages/SecondPage/Individuals";
-import Layout from "./Components/Layout"; // Սա այն ֆայլն է, որի մեջ Header-ներն ու Footer-ն են
+import Business from "./Pages/ThirdPage/Business"; // Ներմուծում ենք երրորդ էջը
+import Layout from "./Components/Layout"; 
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
           
           {/* Անհատների էջը */}
           <Route path="individuals" element={<Individuals />} />
+          
+          {/* Բիզնեսի էջը */}
+          <Route path="business" element={<Business />} />
           
         </Route>
       </Routes>
