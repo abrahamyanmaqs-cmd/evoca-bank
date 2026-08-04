@@ -5,9 +5,11 @@ import "./App.css";
 // Քո էջերն ու ընդհանուր Layout-ը
 import HomePage from "./Pages/HomePage/HomePage";
 import Individuals from "./Pages/SecondPage/Individuals";
-import Business from "./Pages/ThirdPage/Business"; // Ներմուծում ենք երրորդ էջը
+import Business from "./Pages/ThirdPage/Business"; // Երրորդ էջը
+import Payment from "./Pages/FourthPage/Payment"; // Չորրորդ էջը
+import About from "./Pages/FifthPage/About"; // Հինգերորդ էջը (ստուգիր ֆոլդերիդ ճիշտ անունը)
 import Layout from "./Components/Layout"; 
-import Payment from "./Pages/FourthPage/Payment";
+
 function App() {
   return (
     <BrowserRouter>
@@ -23,7 +25,12 @@ function App() {
           
           {/* Բիզնեսի էջը */}
           <Route path="business" element={<Business />} />
-           <Route path="payments" element={<Payment />} />
+          
+          {/* Վճարումների էջը (Չորրորդ) */}
+          <Route path="payments" element={<Payment />} />
+
+          {/* Մեր մասին էջը (Հինգերորդ) */}
+          <Route path="about" element={<About />} />
           
         </Route>
       </Routes>
