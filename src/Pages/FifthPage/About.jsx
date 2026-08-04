@@ -1,8 +1,17 @@
  import React, { useState } from "react";
 import AboutHero from "./AboutHero";
+import AboutVision from "./AboutVision";
+import AboutMission from "./AboutMission";
+import AboutHistory from "./AboutHistory";
+import AboutValues from "./AboutValues";
+import AboutCSR from "./AboutCSR";
+import AboutLogo from "./AboutLogo";         
+import AboutBrandbook from "./AboutBrandbook"; 
+import AboutColors from "./AboutColors";     
+import AboutVideo from "./AboutVideo";
+
 
 const About = () => {
-  // Պահում ենք ակտիվ մենյուի ինդեքսը կամ անունը
   const [activeTab, setActiveTab] = useState("Ընդհանուր");
 
   const menuItems = [
@@ -33,7 +42,6 @@ const About = () => {
                 }`}
               >
                 {item}
-                {/* Գիծը, որը հայտնվում է սեղմված վիճակում */}
                 {isActive && (
                   <span className="absolute bottom-[-14px] left-0 w-full h-[3px] bg-white rounded-t-full"></span>
                 )}
@@ -43,8 +51,17 @@ const About = () => {
         </div>
       </div>
 
-      {/* Այստեղ կանչում ենք մեր առանձին բաղադրիչը */}
+      {/* Բոլոր բաղադրիչները միասին */}
       <AboutHero />
+      <AboutVision />
+      <AboutMission />
+      <AboutHistory />
+      <AboutValues />
+      <AboutCSR />
+      <AboutLogo />
+      <AboutBrandbook />
+      <AboutColors />
+      <AboutVideo/>
 
     </div>
   );
