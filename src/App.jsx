@@ -8,6 +8,7 @@ import Payment from "./Pages/FourthPage/Payment";
 import About from "./Pages/FifthPage/About"; 
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
+import Career from "./Pages/EigthinPage/Carier";
 import Layout from "./Components/Layout"; 
 
 function App() {
@@ -21,7 +22,9 @@ function App() {
           <Route path="payments" element={<Payment />} />
           <Route path="about" element={<About />} />
           <Route path="news" element={<News />} />
-          <Route path="blog" element={<Blog />} />  
+          <Route path="blog" element={<Blog />} /> 
+          <Route path="career" element={<Career />} />
+
         </Route>
       </Routes>
     </BrowserRouter>
