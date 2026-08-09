@@ -11,6 +11,7 @@ import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
 import Individualss from "./Pages/NinthPage/Individualss";
 import Cardss from "./Pages/TenthPage/Cardss";
+import Avandner from "./Pages/EleventhPage/Avandner"; // Ավելացված է ավանդների էջը
 import Layout from "./Components/Layout"; 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
           <Route path="career" element={<Career />} />
           <Route path="loans" element={<Individualss />} />  
           <Route path="cards" element={<Cardss />} />  
+          <Route path="deposits" element={<Avandner />} />  
         </Route>
       </Routes>
     </BrowserRouter>
