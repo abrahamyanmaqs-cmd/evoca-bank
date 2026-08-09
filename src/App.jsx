@@ -10,6 +10,7 @@ import News from "./Pages/SixthPage/News";
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
 import Individualss from "./Pages/NinthPage/Individualss";
+import Cardss from "./Pages/TenthPage/Cardss";
 import Layout from "./Components/Layout"; 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
           <Route path="loans" element={<Individualss />} />  
+          <Route path="cards" element={<Cardss />} />  
         </Route>
       </Routes>
     </BrowserRouter>
