@@ -9,6 +9,7 @@ import About from "./Pages/FifthPage/About";
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
+import Individualss from "./Pages/NinthPage/Individualss";
 import Layout from "./Components/Layout"; 
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
-
+          <Route path="loans" element={<Individualss />} />  
         </Route>
       </Routes>
     </BrowserRouter>
