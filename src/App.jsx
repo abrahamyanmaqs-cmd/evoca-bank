@@ -13,6 +13,7 @@ import Individualss from "./Pages/NinthPage/Individualss";
 import Cardss from "./Pages/TenthPage/Cardss";
 import Avandner from "./Pages/EleventhPage/Avandner";  
 import Acount from "./Pages/TvelfthPage/Acounts";
+import Transfers from "./Pages/ThirteenthPage/Transfers"; 
 import Layout from "./Components/Layout"; 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path="cards" element={<Cardss />} />  
           <Route path="deposits" element={<Avandner />} />  
           <Route path="accounts" element={<Acount />} />  
+          <Route path="transfers" element={<Transfers />} />  
         </Route>
       </Routes>
     </BrowserRouter>
