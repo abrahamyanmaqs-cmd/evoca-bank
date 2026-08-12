@@ -4,6 +4,7 @@ import TransferGeneralRules from './TransferGeneralRules';
 import TransferBanner from './TransferBanner';
 import TransferAccordion from './TransferAccordion';
 import TransferDocuments from './TransferDocuments';
+import AcountBankingBannerrr from './NaxaFooter';
 const Transfers = () => {
   return (
     <div className="w-full font-sans min-h-screen py-6">
@@ -12,6 +13,7 @@ const Transfers = () => {
       <TransferBanner  />
       <TransferAccordion />
       <TransferDocuments />
+      <AcountBankingBannerrr />
     </div>
   );
 };
