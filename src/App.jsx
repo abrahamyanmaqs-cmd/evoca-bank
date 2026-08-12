@@ -14,8 +14,10 @@ import Cardss from "./Pages/TenthPage/Cardss";
 import Avandner from "./Pages/EleventhPage/Avandner";  
 import Acount from "./Pages/TvelfthPage/Acounts";
 import Transfers from "./Pages/ThirteenthP/ Transfers";
-import Layout from "./Components/Layout"; 
 import Arjetghter from "./Pages/FourthinthPage/Arjetghter";
+import EvocaSALARY from "./Pages/FiftheenthPage/EvocaSALARY";
+import Layout from "./Components/Layout"; 
+ 
 function App() {
   return (
     <BrowserRouter>
@@ -35,6 +37,7 @@ function App() {
           <Route path="accounts" element={<Acount />} />  
           <Route path="transfers" element={<Transfers />} />  
           <Route path="securities" element={<Arjetghter />} />
+          <Route path="evocasalary" element={<EvocaSALARY />} />
         </Route>
       </Routes>
     </BrowserRouter>
