@@ -1,6 +1,7 @@
 import EvocaSalaryHero from "./EvocaSalaryHero";
 import EvocaSalaryContent from "./EvocaSalaryContent";
 import EvocasNews from "./EvocasNewss";
+import EvocaSalaryFAQ from "./EvocaSalaryFAQ";
 
 
 const EvocaSALARY = () => {
@@ -9,6 +10,7 @@ const EvocaSALARY = () => {
     <EvocaSalaryHero />
     <EvocaSalaryContent />
     <EvocasNews />
+    <EvocaSalaryFAQ />
     </div>
   );
 };
