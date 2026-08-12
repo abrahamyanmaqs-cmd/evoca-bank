@@ -15,7 +15,7 @@ import Avandner from "./Pages/EleventhPage/Avandner";
 import Acount from "./Pages/TvelfthPage/Acounts";
 import Transfers from "./Pages/ThirteenthP/ Transfers";
 import Layout from "./Components/Layout"; 
-
+import Arjetghter from "./Pages/FourthinthPage/Arjetghter";
 function App() {
   return (
     <BrowserRouter>
@@ -34,6 +34,7 @@ function App() {
           <Route path="deposits" element={<Avandner />} />  
           <Route path="accounts" element={<Acount />} />  
           <Route path="transfers" element={<Transfers />} />  
+          <Route path="securities" element={<Arjetghter />} />
         </Route>
       </Routes>
     </BrowserRouter>
