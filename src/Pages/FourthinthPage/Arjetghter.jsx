@@ -1,6 +1,7 @@
    import ArjetghterMain from "./ArjetghterMain";
    import ArjetghterDetails from "./ArjetghterDetails";
    import ArjetghterAccordion from "./ArjetghterAccordion";
+   import ArjetghterNews from "./ArjetghterNews";
 
 
 
@@ -10,6 +11,7 @@
       <ArjetghterMain />
       <ArjetghterDetails />
       <ArjetghterAccordion />
+      <ArjetghterNews />
     </div>
   );
 };
