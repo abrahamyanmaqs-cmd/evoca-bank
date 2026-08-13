@@ -1,6 +1,7 @@
 import EvocaTouchHero from "./EvocaTouchHero"
 import DocumentsList from "./DocumentsList";
 import Animation from "./Animation";
+import TestimonialSectionn from "./NaxaFooter";
 
 
 
@@ -10,6 +11,7 @@ import Animation from "./Animation";
        <EvocaTouchHero />
        <DocumentsList />
        <Animation />
+       <TestimonialSectionn />
     </div>
   );
 };
