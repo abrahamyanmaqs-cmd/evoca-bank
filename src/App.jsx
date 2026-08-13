@@ -16,6 +16,7 @@ import Acount from "./Pages/TvelfthPage/Acounts";
 import Transfers from "./Pages/ThirteenthP/ Transfers";
 import Arjetghter from "./Pages/FourthinthPage/Arjetghter";
 import EvocaSALARY from "./Pages/FiftheenthPage/EvocaSALARY";
+import EvocaTouch from "./Pages/SixtheenthPage/EvocaTouch";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -37,7 +38,8 @@ function App() {
           <Route path="accounts" element={<Acount />} />  
           <Route path="transfers" element={<Transfers />} />  
           <Route path="securities" element={<Arjetghter />} />
-          <Route path="evocasalary" element={<EvocaSALARY />} />
+            <Route path="evocasalary" element={<EvocaSALARY />} />
+            <Route path="evocatouch" element={<EvocaTouch />} />
         </Route>
       </Routes>
     </BrowserRouter>
