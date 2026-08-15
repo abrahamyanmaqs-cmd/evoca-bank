@@ -5,7 +5,10 @@ import HomePage from "./Pages/HomePage/HomePage";
 import Individuals from "./Pages/SecondPage/Individuals";
 import Business from "./Pages/ThirdPage/Business";  
 import Payment from "./Pages/FourthPage/Payment";  
-import About from "./Pages/FifthPage/About"; 
+
+// Եթե ձեր ֆայլը գտնվում է Pages2/SeventeenPage թղթապանակում, ուղին ուղղեք այսպես.
+import AboutUs from "./Pages2/SeventeenthPage/AboutUs";
+
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
@@ -23,12 +26,16 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Layout-ը ապահովում է, որ վերևում լինի Header-ը, մեջտեղում փոխվող էջերը (<Outlet />), ներքևում՝ Footer-ը */}
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="individuals" element={<Individuals />} />
           <Route path="business" element={<Business />} />
           <Route path="payments" element={<Payment />} />
-          <Route path="about" element={<About />} />
+          
+          {/* Սա այն routing-ն է, որը բացում է ձեր նոր AboutUs էջը Layout-ի մեջտեղում */}
+          <Route path="about" element={<AboutUs />} />
+
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
@@ -38,8 +45,8 @@ function App() {
           <Route path="accounts" element={<Acount />} />  
           <Route path="transfers" element={<Transfers />} />  
           <Route path="securities" element={<Arjetghter />} />
-            <Route path="evocasalary" element={<EvocaSALARY />} />
-            <Route path="evocatouch" element={<EvocaTouch />} />
+          <Route path="evocasalary" element={<EvocaSALARY />} />
+          <Route path="evocatouch" element={<EvocaTouch />} />
         </Route>
       </Routes>
     </BrowserRouter>
