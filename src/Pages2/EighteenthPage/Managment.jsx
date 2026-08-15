@@ -1,5 +1,6 @@
 import TeamSection from "./TeamSection";
 import ManagementBoard from "./ManagementBoard";
+import InternalAudit from "./InternalAudit";
 
 const Managment = () => {
 
@@ -8,6 +9,7 @@ const Managment = () => {
      
 <TeamSection />
 <ManagementBoard />
+<InternalAudit />
     </div>
   );
 };
