@@ -5,10 +5,9 @@ import HomePage from "./Pages/HomePage/HomePage";
 import Individuals from "./Pages/SecondPage/Individuals";
 import Business from "./Pages/ThirdPage/Business";  
 import Payment from "./Pages/FourthPage/Payment";  
-
 import Managment from "./Pages2/EighteenthPage/Managment";
 import AboutUs from "./Pages2/SeventeenthPage/AboutUs";
-
+import Shareholders from "./Pages2/NinteenthPage/Bajneterer";
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
@@ -34,6 +33,7 @@ function App() {
           <Route path="payments" element={<Payment />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="management" element={<Managment   />} />
+          <Route path="shareholders" element={<Shareholders />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
