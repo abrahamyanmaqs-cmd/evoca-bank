@@ -8,6 +8,7 @@ import Payment from "./Pages/FourthPage/Payment";
 import Managment from "./Pages2/EighteenthPage/Managment";
 import AboutUs from "./Pages2/SeventeenthPage/AboutUs";
 import Shareholders from "./Pages2/NinteenthPage/Bajneterer";
+import Hasvetvutyunner from "./Pages2/TwentyPage/Hashvetvutyunner";
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
@@ -34,6 +35,7 @@ function App() {
           <Route path="about" element={<AboutUs />} />
           <Route path="management" element={<Managment   />} />
           <Route path="shareholders" element={<Shareholders />} />
+          <Route path="/reports" element={<Hasvetvutyunner />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
