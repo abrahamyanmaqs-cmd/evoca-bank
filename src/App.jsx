@@ -6,7 +6,7 @@ import Individuals from "./Pages/SecondPage/Individuals";
 import Business from "./Pages/ThirdPage/Business";  
 import Payment from "./Pages/FourthPage/Payment";  
 
-// Եթե ձեր ֆայլը գտնվում է Pages2/SeventeenPage թղթապանակում, ուղին ուղղեք այսպես.
+import Managment from "./Pages2/EighteenthPage/Managment";
 import AboutUs from "./Pages2/SeventeenthPage/AboutUs";
 
 import News from "./Pages/SixthPage/News";  
@@ -26,16 +26,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Layout-ը ապահովում է, որ վերևում լինի Header-ը, մեջտեղում փոխվող էջերը (<Outlet />), ներքևում՝ Footer-ը */}
+        
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="individuals" element={<Individuals />} />
           <Route path="business" element={<Business />} />
           <Route path="payments" element={<Payment />} />
-          
-          {/* Սա այն routing-ն է, որը բացում է ձեր նոր AboutUs էջը Layout-ի մեջտեղում */}
           <Route path="about" element={<AboutUs />} />
-
+          <Route path="management" element={<Managment   />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
