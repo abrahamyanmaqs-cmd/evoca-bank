@@ -12,6 +12,7 @@ import Hasvetvutyunner from "./Pages2/TwentyPage/Hashvetvutyunner";
 import Laws from "./Pages2/TwentyOnethPage/Laws";
 import Tariff from "./Pages2/TwentyTwothPage/tarifs";
 import Property from "./Pages2/TwentyThreePage/Property";
+import Builders from "./Pages2/TwentyFourthPage/Builders";
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
@@ -42,6 +43,7 @@ function App() {
           <Route path="/laws" element={<Laws />} />
           <Route path="/tariffs" element={<Tariff />} />
           <Route path="/property" element={<Property />} />
+          <Route path="/builders" element={<Builders />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
