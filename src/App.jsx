@@ -9,6 +9,7 @@ import Managment from "./Pages2/EighteenthPage/Managment";
 import AboutUs from "./Pages2/SeventeenthPage/AboutUs";
 import Shareholders from "./Pages2/NinteenthPage/Bajneterer";
 import Hasvetvutyunner from "./Pages2/TwentyPage/Hashvetvutyunner";
+import Laws from "./Pages2/TwentyOnethPage/Laws";
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
@@ -36,6 +37,7 @@ function App() {
           <Route path="management" element={<Managment   />} />
           <Route path="shareholders" element={<Shareholders />} />
           <Route path="/reports" element={<Hasvetvutyunner />} />
+          <Route path="/laws" element={<Laws />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
