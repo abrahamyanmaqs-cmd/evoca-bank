@@ -14,6 +14,7 @@ import Tariff from "./Pages2/TwentyTwothPage/tarifs";
 import Property from "./Pages2/TwentyThreePage/Property";
 import Builders from "./Pages2/TwentyFourthPage/Builders";
 import Auto from "./Pages2/TwentyFifthPage/Auto";
+import Arxive from "./Pages2/TwentySixthPage/Arxive";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -46,6 +47,7 @@ function App() {
           <Route path="/tariffs" element={<Tariff />} />
           <Route path="/property" element={<Property />} />
           <Route path="/builders" element={<Builders />} />
+         <Route path="/archive" element={<Arxive/>} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
