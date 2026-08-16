@@ -11,6 +11,7 @@ import Shareholders from "./Pages2/NinteenthPage/Bajneterer";
 import Hasvetvutyunner from "./Pages2/TwentyPage/Hashvetvutyunner";
 import Laws from "./Pages2/TwentyOnethPage/Laws";
 import Tariff from "./Pages2/TwentyTwothPage/tarifs";
+import Property from "./Pages2/TwentyThreePage/Property";
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
@@ -40,6 +41,7 @@ function App() {
           <Route path="/reports" element={<Hasvetvutyunner />} />
           <Route path="/laws" element={<Laws />} />
           <Route path="/tariffs" element={<Tariff />} />
+          <Route path="/property" element={<Property />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
