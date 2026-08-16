@@ -13,6 +13,8 @@ import Laws from "./Pages2/TwentyOnethPage/Laws";
 import Tariff from "./Pages2/TwentyTwothPage/tarifs";
 import Property from "./Pages2/TwentyThreePage/Property";
 import Builders from "./Pages2/TwentyFourthPage/Builders";
+import Auto from "./Pages2/TwentyFifthPage/Auto";
+//2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
@@ -55,6 +57,7 @@ function App() {
           <Route path="securities" element={<Arjetghter />} />
           <Route path="evocasalary" element={<EvocaSALARY />} />
           <Route path="evocatouch" element={<EvocaTouch />} />
+          <Route path="partners" element={<Auto />} />
         </Route>
       </Routes>
     </BrowserRouter>
