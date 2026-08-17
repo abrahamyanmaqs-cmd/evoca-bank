@@ -208,7 +208,7 @@ export default function CardSlider() {
 
           <div className="flex justify-center lg:justify-start">
             <a
-              href="#"
+              href="/cards"
               className="inline-block bg-[#5E2BFF] hover:bg-[#4A1EEB] text-white text-xs sm:text-sm font-semibold py-3 px-6 sm:px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
             >
               Մանրամասն
