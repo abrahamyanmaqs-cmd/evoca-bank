@@ -26,6 +26,7 @@ import Vaults from "./Pages2/ThrdinFourthPage/Vaults";
 import Faq from "./Pages2/ThrdinFivePage/Faq";
 import Announcements from "./Pages2/ThrdinSIxPage/Announcements";
 import Dibrary from "./Pages2/ThrdinSeventhPage/Dibrary";
+import Bukletner from "./Pages2/ThrdinEighthPage/Bukletner";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -69,6 +70,8 @@ function App() {
            <Route path="/faq" element={<Faq />} />
           <Route path="/announcements" element={< Announcements/>} />
           <Route path="/dibrary" element={<Dibrary />} />
+           <Route path="/booklets" element={<Bukletner/>} />
+
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
