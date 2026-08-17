@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Ներմուծում ենք Link-ը
 
 const faces = [
   "https://www.evoca.am/img/temp/biometric/face1.png",
@@ -115,14 +116,14 @@ export default function BiometricSection() {
               />
             </div>
 
-            {/* Կոճակ */}
+            {/* Կոճակ՝ Link-ով դեպի evocatouch */}
             <div className="w-full sm:w-auto">
-              <a
-                href="#"
+              <Link
+                to="/evocatouch"
                 className="bg-[rgb(100,0,220)] hover:bg-[rgb(85,0,190)] text-white font-semibold px-8 py-3.5 rounded-full shadow-md transition-all duration-300 inline-flex items-center justify-center text-sm sm:text-base w-full sm:w-auto"
               >
                 Իմանալ ավելին
-              </a>
+              </Link>
             </div>
           </div>
         </div>
