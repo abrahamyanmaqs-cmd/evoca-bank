@@ -1,9 +1,11 @@
- import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { db } from "../../firebase";
 import { collection, addDoc } from "firebase/firestore";
+import { useFavoriteStore } from '../../useFavoriteStore';
 
 const CardsSection = () => {
   const [activeCategory, setActiveCategory] = useState("Բոլորը");
+  const { favorites, toggleFavorite } = useFavoriteStore();
 
   const categories = [
     "Բոլորը",
@@ -16,7 +18,6 @@ const CardsSection = () => {
     "UnionPay"
   ];
 
-  // Բոլոր 20 քարտերի տվյալները
   const cardsData = [
     {
       id: 1,
@@ -237,21 +238,6 @@ const CardsSection = () => {
     }
   ];
 
-  useEffect(() => {
-    const uploadData = async () => {
-      try {
-        for (const item of cardsData) {
-          await addDoc(collection(db, "cards"), item);
-        }
-        console.log("Բոլոր քարտերը հաջողությամբ գրանցվեցին Firebase-ում!");
-      } catch (error) {
-        console.error("Սխալ Firebase ուղարկելիս:", error);
-      }
-    };
-
-    // uploadData(); // Միացրեք այս տողը միայն մեկ անգամ տվյալները բազա լցնելու համար
-  }, []);
-
   const filteredCards = cardsData.filter((card) => {
     if (activeCategory === "Բոլորը") return true;
     return card.category === activeCategory;
@@ -286,50 +272,68 @@ const CardsSection = () => {
         </div>
 
         <div className="mt-10 flex flex-col w-full">
-          {filteredCards.map((card) => (
-            <div 
-              key={card.id} 
-              className="flex flex-col md:flex-row gap-8 w-full border-b border-gray-200 py-10 items-start"
-            >
-              <div className="w-full md:w-1/3 flex-shrink-0">
-                <img 
-                  src={card.image} 
-                  alt={card.title} 
-                  className="w-full h-auto object-cover rounded-xl shadow-sm"
-                />
-              </div>
+          {filteredCards.map((card) => {
+            const isFavorite = favorites.some((fav) => fav.id === card.id);
 
-              <div className="w-full md:w-2/3 flex flex-col justify-between">
-                <div>
-                  <h3 className="text-2xl font-black text-[#1C1C1E] mb-3">{card.title}</h3>
-                  <p className="text-[#6B7280] text-[15px] leading-relaxed mb-6">
-                    {card.description}
-                  </p>
-                </div>
-
-                {card.features && card.features.length > 0 && (
-                  <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                    {card.features.map((feat, idx) => (
-                      <div key={idx}>
-                        <p className="text-xs text-[#6B7280] mb-1 leading-snug">{feat.label}</p>
-                        <p className="text-xl font-bold text-[#5E1EEB]">{feat.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <div>
-                  <button className="bg-[#F3F0FD] text-[#5E1EEB] font-semibold px-6 py-3 rounded-full hover:bg-[#5E1EEB] hover:text-white transition-colors flex items-center gap-2 cursor-pointer">
-                    Մանրամասն
-                    <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M1 1L5 5L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+            return (
+              <div 
+                key={card.id} 
+                className="flex flex-col md:flex-row gap-8 w-full border-b border-gray-200 py-10 items-start"
+              >
+                {/* ՆԿԱՐԻ ԲԼՈԿ՝ ԻՐ ԱՋ ԱՆԿՅԱՆ ՍՐՏԻԿՈՎ */}
+                <div className="w-full md:w-1/3 flex-shrink-0 relative">
+                  <img 
+                    src={card.image} 
+                    alt={card.title} 
+                    className="w-full h-auto object-cover rounded-xl shadow-sm"
+                  />
+                  <button
+                    onClick={() => toggleFavorite(card)}
+                    className="absolute top-3 right-3 w-9 h-9 bg-white/80 backdrop-blur-md rounded-full flex items-center justify-center shadow-md hover:scale-110 transition-transform cursor-pointer"
+                  >
+                    <svg 
+                      className={`w-5 h-5 transition-colors ${isFavorite ? "text-red-500 fill-red-500" : "text-gray-400 hover:text-red-500"}`} 
+                      fill={isFavorite ? "currentColor" : "none"} 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                     </svg>
                   </button>
                 </div>
 
+                <div className="w-full md:w-2/3 flex flex-col justify-between">
+                  <div>
+                    <h3 className="text-2xl font-black text-[#1C1C1E] mb-3">{card.title}</h3>
+                    <p className="text-[#6B7280] text-[15px] leading-relaxed mb-6">
+                      {card.description}
+                    </p>
+                  </div>
+
+                  {card.features && card.features.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+                      {card.features.map((feat, idx) => (
+                        <div key={idx}>
+                          <p className="text-xs text-[#6B7280] mb-1 leading-snug">{feat.label}</p>
+                          <p className="text-xl font-bold text-[#5E1EEB]">{feat.value}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <div>
+                    <button className="bg-[#F3F0FD] text-[#5E1EEB] font-semibold px-6 py-3 rounded-full hover:bg-[#5E1EEB] hover:text-white transition-colors flex items-center gap-2 cursor-pointer">
+                      Մանրամասն
+                      <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M1 1L5 5L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </button>
+                  </div>
+
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
         
       </div>
