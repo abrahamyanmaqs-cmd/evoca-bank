@@ -18,6 +18,7 @@ import Arxive from "./Pages2/TwentySixthPage/Arxive";
 import Rights from "./Pages2/TwentySeventhPage/Rights";
 import Text from "./Pages2/TwenyEightPage/Text";
 import Regulation from "./Pages2/TwentyNinePage/Regulation";
+import Privacy from "./Pages2/ThirdinthPage/Privacy";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -53,8 +54,8 @@ function App() {
          <Route path="/archive" element={<Arxive/>} />
          <Route path="/rights" element={<Rights />} />
          <Route path="/criteria" element={<Text />} />
-         
           <Route path="/regulation" element={<Regulation />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
