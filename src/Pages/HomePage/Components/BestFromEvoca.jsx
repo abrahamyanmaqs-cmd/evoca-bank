@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+ import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { db } from '../../../firebase';
 import { collection, getDocs } from 'firebase/firestore';
 
@@ -24,6 +25,22 @@ export default function BestFromEvoca() {
 
     fetchCards();
   }, []);
+
+  // Ֆունկցիա՝ ըստ ինդեքսի համապատասխան link վերադարձնելու համար
+  const getCardLink = (index) => {
+    switch (index) {
+      case 0:
+        return "/news";
+      case 1:
+        return "/news";
+      case 2:
+        return "/about-card";
+      case 3:
+        return "/payments";
+      default:
+        return "#";
+    }
+  };
 
   return (
     <section className="relative bg-[#5E2BFF] py-12 sm:py-16 md:py-20 px-3 sm:px-6 md:px-16 overflow-x-hidden text-white min-h-[680px] flex items-center w-full select-none">
@@ -74,7 +91,7 @@ export default function BestFromEvoca() {
 
             {/* 3. 3D ZigZag/Ribbon Shape */}
             <div className="absolute bottom-16 left-6 sm:bottom-20 sm:left-12 animate-[pulse_3s_infinite] pointer-events-none z-20">
-              <svg width="32" height="20" sm:width="40" sm:height="25" viewBox="0 0 40 25" fill="none">
+              <svg width="32" height="20" viewBox="0 0 40 25" fill="none">
                 <path d="M2 20 L12 5 L22 20 L32 5 L38 12" stroke="#FF4081" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </div>
@@ -100,10 +117,10 @@ export default function BestFromEvoca() {
               </div>
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5 w-full">
-                {cardsData.slice(0, 4).map((card) => (
-                  <a
+                {cardsData.slice(0, 4).map((card, index) => (
+                  <Link
                     key={card.id}
-                    href={card.link || "#"}
+                    to={getCardLink(index)}
                     className="bg-white text-[#2B2B2B] p-5 sm:p-7 rounded-[20px] sm:rounded-[24px] shadow-lg hover:shadow-[0_20px_35px_rgba(0,0,0,0.25)] transition-all duration-300 transform hover:-translate-y-2 flex flex-col justify-between group border border-transparent hover:border-[#5E2BFF]/20 w-full"
                   >
                     <div>
@@ -117,7 +134,7 @@ export default function BestFromEvoca() {
                         {card.description}
                       </p>
                     </div>
-                  </a>
+                  </Link>
                 ))}
               </div>
             )}
