@@ -16,6 +16,7 @@ import Builders from "./Pages2/TwentyFourthPage/Builders";
 import Auto from "./Pages2/TwentyFifthPage/Auto";
 import Arxive from "./Pages2/TwentySixthPage/Arxive";
 import Rights from "./Pages2/TwentySeventhPage/Rights";
+import Text from "./Pages2/TwenyEightPage/Text";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -50,6 +51,7 @@ function App() {
           <Route path="/builders" element={<Builders />} />
          <Route path="/archive" element={<Arxive/>} />
          <Route path="/rights" element={<Rights />} />
+         <Route path="/criteria" element={<Text />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
