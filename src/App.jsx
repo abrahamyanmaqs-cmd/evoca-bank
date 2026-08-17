@@ -18,6 +18,7 @@ import Arxive from "./Pages2/TwentySixthPage/Arxive";
 import Rights from "./Pages2/TwentySeventhPage/Rights";
 import Text from "./Pages2/TwenyEightPage/Text";
 import Regulation from "./Pages2/TwentyNinePage/Regulation";
+// Ուղղված ճանապարհը դեպի 30-րդ էջ կամ ճիշտ տեղ
 import Privacy from "./Pages2/ThirdinthPage/Privacy";
 //2
 import News from "./Pages/SixthPage/News";  
@@ -37,31 +38,30 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
           <Route path="individuals" element={<Individuals />} />
           <Route path="business" element={<Business />} />
           <Route path="payments" element={<Payment />} />
           <Route path="about" element={<AboutUs />} />
-          <Route path="management" element={<Managment   />} />
+          <Route path="management" element={<Managment />} />
           <Route path="shareholders" element={<Shareholders />} />
-          <Route path="/reports" element={<Hasvetvutyunner />} />
-          <Route path="/laws" element={<Laws />} />
-          <Route path="/tariffs" element={<Tariff />} />
-          <Route path="/property" element={<Property />} />
-          <Route path="/builders" element={<Builders />} />
-         <Route path="/archive" element={<Arxive/>} />
-         <Route path="/rights" element={<Rights />} />
-         <Route path="/criteria" element={<Text />} />
-          <Route path="/regulation" element={<Regulation />} />
-          <Route path="/privacy" element={<Privacy />} />
+          <Route path="reports" element={<Hasvetvutyunner />} />
+          <Route path="laws" element={<Laws />} />
+          <Route path="tariffs" element={<Tariff />} />
+          <Route path="property" element={<Property />} />
+          <Route path="builders" element={<Builders />} />
+          <Route path="archive" element={<Arxive />} />
+          <Route path="rights" element={<Rights />} />
+          <Route path="criteria" element={<Text />} />
+          <Route path="regulation" element={<Regulation />} />
+          <Route path="privacy" element={<Privacy />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
           <Route path="loans" element={<Individualss />} />  
           <Route path="cards" element={<Cardss />} />  
-          <Route path="deposits" element={<Avandner />} />  
+          <Route path="deposits" element={<Avandner />}  />  
           <Route path="accounts" element={<Acount />} />  
           <Route path="transfers" element={<Transfers />} />  
           <Route path="securities" element={<Arjetghter />} />

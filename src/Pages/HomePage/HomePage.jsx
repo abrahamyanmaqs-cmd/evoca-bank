@@ -10,7 +10,7 @@ import PartnersSection from './Components/FamousBrands';
 import FirebaseNewsSection from './Components/NewsSection';
 import CurrencyAndBranchesSection from './Components/CurrencyAndBranchesSection';
 import TestimonialSection from './Components/TestimontalSection';
-import Footer from '../../Components/Footer';
+
 
 const HomePage = () => {
   return (
@@ -26,7 +26,7 @@ const HomePage = () => {
       <FirebaseNewsSection></FirebaseNewsSection>
       <CurrencyAndBranchesSection></CurrencyAndBranchesSection>
       <TestimonialSection></TestimonialSection>
-      <Footer></Footer>
+      
     </div>
   );
 };
