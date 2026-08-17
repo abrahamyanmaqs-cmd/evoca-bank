@@ -1,6 +1,7 @@
 import OnlineText from "./OnlineText";
 import OnlineArgument from "./OnlineArgument";
 import OnlineDocument from "./OnlineDocument";
+import OnlineBanner from "./OnlineBanner";
 
 
    const Online = () => {
@@ -9,6 +10,7 @@ import OnlineDocument from "./OnlineDocument";
        <OnlineText />
        <OnlineArgument />
        <OnlineDocument />
+       <OnlineBanner />
     </div>
   );
 };
