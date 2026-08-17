@@ -30,6 +30,7 @@ import Bukletner from "./Pages2/ThrdinEighthPage/Bukletner";
 import Kap from "./Pages2/ThirdinNinePage/Kap";
 import Map from "./Pages2/FourtinthPage/Map";
 import AboutCard from "./Pages3/FourthinOnePage/AboutCard";
+import AboutCard1 from "./Pages3/FourtinTwothPage/AboutCard1";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -77,6 +78,7 @@ function App() {
            <Route path="/feedback" element={<Kap/>} />
             <Route path="/map" element={<Map/>} />
              <Route path="/about-card" element={<AboutCard/>} />
+            <Route path="/salary-project" element={<AboutCard1/>} />
 
 
           <Route path="news" element={<News />} />
