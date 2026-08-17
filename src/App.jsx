@@ -24,6 +24,7 @@ import CardsRules from "./Pages2/ThirdinTwothPage/CardsRules";
 import Online from "./Pages2/ThrdinThreethPage/Online";
 import Vaults from "./Pages2/ThrdinFourthPage/Vaults";
 import Faq from "./Pages2/ThrdinFivePage/Faq";
+import Announcements from "./Pages2/ThrdinSIxPage/Announcements";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -65,6 +66,7 @@ function App() {
           <Route path="/online" element={<Online />} />
           <Route path="/vaults" element={<Vaults />} />
            <Route path="/faq" element={<Faq />} />
+             <Route path="/announcements" element={< Announcements/>} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
