@@ -34,6 +34,7 @@ import AboutCard1 from "./Pages3/FourtinTwothPage/AboutCard1";
 import AboutCard2 from "./Pages3/FourteentTreethPage/AboutCard2";
 import AboutCard3 from "./Pages3/FourtinFourthPage/AboutCard3";
 import AboutCard4 from "./Pages3/FourthinFifthPage/AboutCard4";
+import AboutCard5 from "./Pages3/FourthinSixthPage/AboutCard5";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -85,6 +86,7 @@ function App() {
             <Route path="/contact" element={<AboutCard2/>} />
              <Route path="/visa-vision" element={<AboutCard3/>} />
                <Route path="/visa-infinite" element={<AboutCard4/>} />
+               <Route path="/mortgage" element={<AboutCard5/>} />
 
 
 
