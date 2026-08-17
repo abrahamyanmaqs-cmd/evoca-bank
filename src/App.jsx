@@ -20,6 +20,7 @@ import Text from "./Pages2/TwenyEightPage/Text";
 import Regulation from "./Pages2/TwentyNinePage/Regulation";
  import Aml from "./Pages2/ThrdinOnethPage/Aml";
 import Privacy from "./Pages2/ThirdinthPage/Privacy";
+import CardsRules from "./Pages2/ThirdinTwothPage/CardsRules";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -57,6 +58,7 @@ function App() {
           <Route path="regulation" element={<Regulation />} />
           <Route path="privacy" element={<Privacy />} />
           <Route path="/aml" element={<Aml />} />
+          <Route path="/cards-rules" element={<CardsRules />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
