@@ -22,6 +22,7 @@ import Regulation from "./Pages2/TwentyNinePage/Regulation";
 import Privacy from "./Pages2/ThirdinthPage/Privacy";
 import CardsRules from "./Pages2/ThirdinTwothPage/CardsRules";
 import Online from "./Pages2/ThrdinThreethPage/Online";
+import Vaults from "./Pages2/ThrdinFourthPage/Vaults";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -61,6 +62,7 @@ function App() {
           <Route path="/aml" element={<Aml />} />
           <Route path="/cards-rules" element={<CardsRules />} />
           <Route path="/online" element={<Online />} />
+          <Route path="/vaults" element={<Vaults />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
