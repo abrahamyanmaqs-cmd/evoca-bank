@@ -18,7 +18,7 @@ import Arxive from "./Pages2/TwentySixthPage/Arxive";
 import Rights from "./Pages2/TwentySeventhPage/Rights";
 import Text from "./Pages2/TwenyEightPage/Text";
 import Regulation from "./Pages2/TwentyNinePage/Regulation";
-// Ուղղված ճանապարհը դեպի 30-րդ էջ կամ ճիշտ տեղ
+ import Aml from "./Pages2/ThrdinOnethPage/Aml";
 import Privacy from "./Pages2/ThirdinthPage/Privacy";
 //2
 import News from "./Pages/SixthPage/News";  
@@ -56,6 +56,7 @@ function App() {
           <Route path="criteria" element={<Text />} />
           <Route path="regulation" element={<Regulation />} />
           <Route path="privacy" element={<Privacy />} />
+          <Route path="/aml" element={<Aml />} />
           <Route path="news" element={<News />} />
           <Route path="blog" element={<Blog />} /> 
           <Route path="career" element={<Career />} />
