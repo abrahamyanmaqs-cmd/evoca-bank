@@ -5,18 +5,31 @@ export default function DibraryBox() {
     <section className="w-full bg-white py-16 px-4 md:px-12 font-sans">
       <div className="max-w-[1300px] mx-auto flex flex-col lg:flex-row items-center gap-12">
         
-        {/* Ձախ մաս՝ Վերնագիր և տեքստ */}
+        {/* Ձախ մաս՝ Վերնագիր և տեքստեր */}
         <div className="w-full lg:w-1/2 flex flex-col gap-6">
           <h2 className="text-[32px] md:text-[40px] font-extrabold text-[#222222] leading-tight">
             Dibrary - Digital Library
           </h2>
+          
           <p className="text-[#555555] text-[16px] md:text-[18px] leading-relaxed">
             Evocabank-ի նոր և գերժամանակակից «Թումանյան» մասնաճյուղում՝ Թումանյան 15 հասցեով, բացի ստանդարտ բանկային ծառայություններից, կգործի նաև Dibrary – digital library:
+          </p>
+
+          <p className="text-[#555555] text-[16px] md:text-[18px] leading-relaxed">
+            #dibrary-ում կարելի է անվճար օգտվել էլեկտրոնային բիզնես ռեսուրսներից՝ e-Duke Journals Scholarly Collection, ASTM Compass, Edward Elgar Publishing Journals, Mathematical Sciences Publishers Journals, Royal Society Journals Collection, SAGE Premier և այլն․․․
+          </p>
+
+          <p className="text-[#555555] text-[16px] md:text-[18px] leading-relaxed">
+            #dibrary-ի գրքերը, հոդվածները և հրապարակումները շարունակաբար համալրվելու են՝ ներառելով նաև համաշխարհային լավագույն համալսարանների փակ վճարովի ռեսուրսները։ Բացի էլեկտրոնային նյութերից, #dibrary-ում կարելի է գտնել նաև դասական գրքեր, ինչպես նաև ժամանակակից բիզնես գրականության բեսթսելլերները, որոնք կարելի է կարդալ տեղում, իսկ ցանկության դեպքում՝ նաև տանել տուն։
+          </p>
+
+          <p className="text-[#555555] text-[16px] md:text-[18px] leading-relaxed">
+            #dibrary-ի բացման գործում մեզ աջակցել են՝ DLAA-ը՝ Հայաստանի թվային գրադարանների ասոցիացիան (Digital Library Association of Armenia), Ավետիք Իսահակյանի անվան գրադարանը և American Corner Yerevan-ը։ Նրանց աջակցության շնորհիվ՝ #dibrary-ում կարելի է անվճար օգտվել այնպիսի հրատարակիչների նյութերից, որոնց անդամակցությունը բավականին թանկ է և շատերի համար՝ անհասանելի։
           </p>
         </div>
 
         {/* Աջ մաս՝ Նկար */}
-        <div className="w-full lg:w-1/2">
+        <div className="w-full lg:w-1/2 self-start sticky top-8">
           <div className="rounded-3xl overflow-hidden shadow-xl border border-[#E5E2EC]">
             <img 
               src="https://www.evoca.am/images-cache/menu/1/16117479662777/780x585.jpg" 
