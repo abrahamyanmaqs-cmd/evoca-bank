@@ -83,10 +83,11 @@ export default function OnlineBankingBanner() {
             <p className="text-xs sm:text-sm md:text-base text-purple-100 mb-6 sm:mb-8 leading-relaxed max-w-xl font-medium">
               Evocabank-ը արագ, պարզ և նորարար ծառայություններ մատուցող բանկ է, որն առանձնանում է տեղեկատվական նորագույն տեխնոլոգիաների ակտիվ կիրառմամբ:
             </p>
-
+        <a href="https://online.evoca.am/InternetBank/MainForm.wgx"> 
             <button className="bg-white text-[#5E1EEB] hover:bg-purple-50 font-bold text-xs sm:text-sm py-3.5 sm:py-4 px-8 sm:px-9 rounded-full shadow-lg transition-all duration-300 cursor-pointer mb-6 sm:mb-8">
               Դառնալ հաճախորդ
             </button>
+            </a>
 
             {/* Ներքևի հատված՝ QR կոդ և հավելվածների խանութներ */}
             <div className="flex flex-col sm:flex-row items-center sm:items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-5 sm:pt-6 border-t border-purple-400/30 w-full">

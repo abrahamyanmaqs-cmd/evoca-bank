@@ -1,134 +1,87 @@
- import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const testimonials = [
+const newsItems = [
   {
     id: 1,
-    quote: "Բանկ, որ իր ռեբրենդինգի շքեղ միջոցառումով ու աշխատանքային ձևաչափով բանկային ոլորտում ամրապնդեց որակ և ճաշակ թելադրեց: Evocabank-ն առաջին իսկ վայրկյանից ստիպեց նորովի և ժամանակակից...",
-    author: "Կամո Թովմասյան",
-    title: "KAMOBOG մեդիա-հարթակի հիմնադիր, influencer"
+    category: "Բանկային",
+    title: "Հայաստանում գործարկվեց Firebird AI-ի «ԱԲ գործարանը»",
+    image: "https://www.evoca.am/images-cache/news/1/17864472573391/439x320.png",
+    link: "/  news"
   },
   {
     id: 2,
-    quote: "Հիանալի սպասարկում և նորարարական լուծումներ, որոնք զգալիորեն հեշտացնում են ամենօրյա ֆինանսական գործարքները:",
-    author: "Արման Մանուկյան",
-    title: "Հաճախորդ"
+    category: "Բանկային",
+    title: "Evocabank-ը և Green Rock-ը մեկնարկեցին Բանկի նոր...",
+    image: "https://www.evoca.am/images-cache/news/1/17854167235525/439x320.png",
+    link: "/news"
+  },
+  {
+    id: 3,
+    category: "Բանկային",
+    title: "Գործարքների արգելափակում 1 կոճակով",
+    image: "https://www.evoca.am/images-cache/news/1/17852444643548/439x320.png",
+    link: "/news"
   }
 ];
 
-export default function TestimonialSection() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-
+export default function NewsSection() {
   return (
-    <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap');
-        .font-montserrat {
-          font-family: 'Montserrat', sans-serif;
-        }
-
-        @keyframes floatSlow {
-          0%, 100% { transform: translateY(0px) rotate(-10deg); }
-          50% { transform: translateY(-10px) rotate(-5deg); }
-        }
-
-        @keyframes floatSlowReverse {
-          0%, 100% { transform: translateY(0px) rotate(10deg); }
-          50% { transform: translateY(10px) rotate(15deg); }
-        }
-
-        @keyframes lineWave {
-          0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.8; }
-          50% { transform: translateY(-6px) scaleY(1.05); opacity: 1; }
-        }
-
-        .animate-hand-left {
-          animation: floatSlow 5s ease-in-out infinite;
-        }
-
-        .animate-hand-right {
-          animation: floatSlowReverse 6s ease-in-out infinite;
-        }
-
-        .animate-zigzag {
-          animation: lineWave 3s ease-in-out infinite;
-        }
-      `}</style>
-
-      <section className="w-full bg-[#FAFAFC] py-12 sm:py-16 md:py-28 px-3 sm:px-4 md:px-16 font-montserrat relative overflow-x-hidden select-none">
+    <section className="bg-white py-12 md:py-16 px-4 sm:px-6 md:px-16 w-full select-none">
+      <div className="max-w-[1300px] mx-auto w-full">
         
-        {/* Ձախ դեկորացիա (թաքնված փոքր էկրանների վրա՝ տարածք խնայելու համար) */}
-        <div className="absolute left-6 lg:left-28 top-12 hidden lg:flex flex-col items-center animate-hand-left">
-          <div className="w-20 h-20 bg-gradient-to-tr from-gray-200 via-gray-100 to-gray-300 rounded-2xl shadow-md flex items-center justify-center border border-white/80">
-            <span className="text-3xl filter drop-shadow-sm">👌</span>
-          </div>
-        </div>
-
-        <div className="absolute left-12 lg:left-40 bottom-12 hidden lg:block animate-zigzag">
-          <svg width="32" height="48" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 4L14 14L2 24L14 34" stroke="#5E1EEB" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-
-        {/* Աջ դեկորացիա (թաքնված փոքր էկրանների վրա) */}
-        <div className="absolute right-6 lg:right-28 top-12 hidden lg:flex flex-col items-center animate-hand-right">
-          <div className="w-20 h-20 bg-gradient-to-tr from-gray-200 via-gray-100 to-gray-300 rounded-2xl shadow-md flex items-center justify-center border border-white/80">
-            <span className="text-3xl filter drop-shadow-sm">👍</span>
-          </div>
-        </div>
-
-        <div className="absolute right-12 lg:right-40 bottom-12 hidden lg:block animate-zigzag" style={{ animationDelay: '1.5s' }}>
-          <svg width="32" height="48" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M2 4L14 14L2 24L14 34" stroke="#FF2E93" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </div>
-
-        {/* Բովանդակություն */}
-        <div className="max-w-3xl mx-auto text-center relative z-10 w-full">
+        {/* Վերնագրի հատված և «Բոլոր նորությունները» կոճակ */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 sm:mb-12">
+          <h2 className="text-2xl sm:text-3xl md:text-[36px] font-bold text-[#1C1C1E] tracking-tight">
+            Վերջին նորությունները
+          </h2>
           
-          {/* Աստղեր */}
-          <div className="flex justify-center items-center gap-1 mb-4 md:mb-8">
-            {[...Array(5)].map((_, i) => (
-              <span key={i} className="text-[#FFD700] text-lg sm:text-xl md:text-2xl drop-shadow-xs">★</span>
-            ))}
-          </div>
-
-          {/* Մեջբերում */}
-          <div className="relative px-4 sm:px-6 md:px-12 mb-6 md:mb-10 w-full">
-            <span className="absolute left-0 sm:left-2 -top-3 text-[#5E1EEB] text-3xl sm:text-4xl md:text-5xl font-serif opacity-90 select-none">“</span>
-            
-            <p className="text-xs sm:text-sm md:text-xl text-[#1C1C1E] font-medium leading-relaxed">
-              {testimonials[currentIndex].quote}
-            </p>
-
-            <span className="absolute right-0 sm:right-2 -bottom-5 text-[#5E1EEB] text-3xl sm:text-4xl md:text-5xl font-serif opacity-90 select-none">”</span>
-          </div>
-
-          {/* Հեղինակ */}
-          <div className="mb-6 md:mb-10">
-            <h4 className="text-sm sm:text-base md:text-lg font-bold text-[#1C1C1E] mb-1">
-              {testimonials[currentIndex].author}
-            </h4>
-            <p className="text-[10px] sm:text-[11px] md:text-sm text-gray-400 font-medium px-4">
-              {testimonials[currentIndex].title}
-            </p>
-          </div>
-
-          {/* Նավիգացիայի կետեր */}
-          <div className="flex justify-center items-center gap-2">
-            {testimonials.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentIndex(idx)}
-                className={`h-2 md:h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
-                  currentIndex === idx ? 'w-5 sm:w-6 md:w-8 bg-[#5E1EEB]' : 'w-2 md:w-2.5 bg-gray-300 hover:bg-gray-400'
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-            ))}
-          </div>
-
+          <Link
+            to="/news"
+            className="bg-[#F0EDF9] hover:bg-[#E4DFF3] text-[#6400DC] font-semibold text-xs sm:text-sm py-2.5 px-5 rounded-full transition-all duration-300 inline-flex items-center gap-2 group"
+          >
+            Բոլոր նորությունները 
+            <span className="transform group-hover:translate-x-1 transition-transform">&gt;</span>
+          </Link>
         </div>
-      </section>
-    </>
+
+        {/* Նորությունների քարտերի ցանց (Grid) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          {newsItems.map((item) => (
+            <Link
+              key={item.id}
+              to={item.link}
+              className="bg-white rounded-[24px] overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 flex flex-col group border border-gray-100"
+            >
+              {/* Նկարի բլոկ */}
+              <div className="w-full h-[220px] sm:h-[240px] bg-gray-100 overflow-hidden relative">
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+              </div>
+
+              {/* Բովանդակություն */}
+              <div className="p-5 sm:p-6 flex flex-col flex-grow justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="w-1 h-3.5 bg-[#6400DC] rounded-full inline-block"></span>
+                    <span className="text-xs font-semibold text-[#636366] uppercase tracking-wide">
+                      {item.category}
+                    </span>
+                  </div>
+
+                  <h3 className="text-base sm:text-lg font-bold text-[#1C1C1E] group-hover:text-[#6400DC] transition-colors duration-300 leading-snug">
+                    {item.title}
+                  </h3>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+
+      </div>
+    </section>
   );
 }
