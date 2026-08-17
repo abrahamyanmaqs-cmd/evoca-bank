@@ -1,73 +1,22 @@
-import React, { useState, useEffect } from 'react';
- import { db } from "../../../firebase" // Ներմուծիր քո Firebase կարգավորումների ֆայլից
-import { collection, getDocs, addDoc, query, orderBy } from 'firebase/firestore';
+ import React, { useState } from 'react';
 
-const initialNews = [
+const testimonials = [
   {
-    image: "https://www.evoca.am/images-cache/news/1/17854167235525/439x320.png",
-    category: "Բանկային",
-    categoryColor: "bg-[#5E1EEB]",
-    title: "Evocabank-ը և Green Rock-ը մեկնարկեցին Բանկի նոր...",
-    date: "30.07.2026",
-    createdAt: Date.now() - 3000
+    id: 1,
+    quote: "Բանկ, որ իր ռեբրենդինգի շքեղ միջոցառումով ու աշխատանքային ձևաչափով բանկային ոլորտում ամրապնդեց որակ և ճաշակ թելադրեց: Evocabank-ն առաջին իսկ վայրկյանից ստիպեց նորովի և ժամանակակից...",
+    author: "Կամո Թովմասյան",
+    title: "KAMOBOG մեդիա-հարթակի հիմնադիր, influencer"
   },
   {
-    image: "https://www.evoca.am/images-cache/news/1/17852444643548/439x320.png",
-    category: "Բանկային",
-    categoryColor: "bg-[#5E1EEB]",
-    title: "Գործարքների արգելափակում 1 կոճակով",
-    date: "01.06.2026",
-    createdAt: Date.now() - 2000
-  },
-  {
-    image: "https://www.evoca.am/images-cache/news/1/17847187625556/439x320.png",
-    category: "Մրցանակներ",
-    categoryColor: "bg-[#FFD700]",
-    title: "Evocabank՝ Լավագույն Բանկը Հայաստանում 2026",
-    date: "30.06.2026",
-    createdAt: Date.now() - 1000
+    id: 2,
+    quote: "Հիանալի սպասարկում և նորարարական լուծումներ, որոնք զգալիորեն հեշտացնում են ամենօրյա ֆինանսական գործարքները:",
+    author: "Արման Մանուկյան",
+    title: "Հաճախորդ"
   }
 ];
 
-export default function NewsSection() {
-  const [newsData, setNewsData] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchAndSeedNews = async () => {
-      try {
-        const newsCollectionRef = collection(db, "news");
-        const q = query(newsCollectionRef, orderBy("createdAt", "desc"));
-        const querySnapshot = await getDocs(q);
-
-        // Եթե բազան դատարկ է, ավտոմատ գրում ենք նախնական տվյալները
-        if (querySnapshot.empty) {
-          for (const item of initialNews) {
-            await addDoc(newsCollectionRef, item);
-          }
-          // Նորից ենք կարդում արդեն լցված տվյալները
-          const updatedSnapshot = await getDocs(q);
-          const items = updatedSnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }));
-          setNewsData(items);
-        } else {
-          const items = querySnapshot.docs.map(doc => ({
-            id: doc.id,
-            ...doc.data()
-          }));
-          setNewsData(items);
-        }
-      } catch (error) {
-        console.error("Սխալ Firebase-ի հետ աշխատելիս:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchAndSeedNews();
-  }, []);
+export default function TestimonialSection() {
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
     <>
@@ -76,75 +25,107 @@ export default function NewsSection() {
         .font-montserrat {
           font-family: 'Montserrat', sans-serif;
         }
+
+        @keyframes floatSlow {
+          0%, 100% { transform: translateY(0px) rotate(-10deg); }
+          50% { transform: translateY(-10px) rotate(-5deg); }
+        }
+
+        @keyframes floatSlowReverse {
+          0%, 100% { transform: translateY(0px) rotate(10deg); }
+          50% { transform: translateY(10px) rotate(15deg); }
+        }
+
+        @keyframes lineWave {
+          0%, 100% { transform: translateY(0) scaleY(1); opacity: 0.8; }
+          50% { transform: translateY(-6px) scaleY(1.05); opacity: 1; }
+        }
+
+        .animate-hand-left {
+          animation: floatSlow 5s ease-in-out infinite;
+        }
+
+        .animate-hand-right {
+          animation: floatSlowReverse 6s ease-in-out infinite;
+        }
+
+        .animate-zigzag {
+          animation: lineWave 3s ease-in-out infinite;
+        }
       `}</style>
 
-      <section className="w-full bg-[#F4F5F9] py-20 px-4 md:px-16 font-montserrat select-none">
-        <div className="max-w-[1440px] w-full mx-auto">
+      <section className="w-full bg-[#FAFAFC] py-12 sm:py-16 md:py-28 px-3 sm:px-4 md:px-16 font-montserrat relative overflow-x-hidden select-none">
+        
+        {/* Ձախ դեկորացիա (թաքնված փոքր էկրանների վրա՝ տարածք խնայելու համար) */}
+        <div className="absolute left-6 lg:left-28 top-12 hidden lg:flex flex-col items-center animate-hand-left">
+          <div className="w-20 h-20 bg-gradient-to-tr from-gray-200 via-gray-100 to-gray-300 rounded-2xl shadow-md flex items-center justify-center border border-white/80">
+            <span className="text-3xl filter drop-shadow-sm">👌</span>
+          </div>
+        </div>
+
+        <div className="absolute left-12 lg:left-40 bottom-12 hidden lg:block animate-zigzag">
+          <svg width="32" height="48" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4L14 14L2 24L14 34" stroke="#5E1EEB" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+
+        {/* Աջ դեկորացիա (թաքնված փոքր էկրանների վրա) */}
+        <div className="absolute right-6 lg:right-28 top-12 hidden lg:flex flex-col items-center animate-hand-right">
+          <div className="w-20 h-20 bg-gradient-to-tr from-gray-200 via-gray-100 to-gray-300 rounded-2xl shadow-md flex items-center justify-center border border-white/80">
+            <span className="text-3xl filter drop-shadow-sm">👍</span>
+          </div>
+        </div>
+
+        <div className="absolute right-12 lg:right-40 bottom-12 hidden lg:block animate-zigzag" style={{ animationDelay: '1.5s' }}>
+          <svg width="32" height="48" viewBox="0 0 24 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M2 4L14 14L2 24L14 34" stroke="#FF2E93" strokeWidth="3.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </div>
+
+        {/* Բովանդակություն */}
+        <div className="max-w-3xl mx-auto text-center relative z-10 w-full">
           
-          {/* Վերնագրի հատված և «Բոլոր նորությունները» կոճակ */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4">
-            <h2 className="text-3xl md:text-5xl font-extrabold text-[#1C1C1E] tracking-tight">
-              Վերջին նորությունները
-            </h2>
-            
-            <a 
-              href="#all-news" 
-              className="bg-[#EAE6FF] text-[#5E1EEB] hover:bg-[#5E1EEB] hover:text-white font-bold text-sm py-3.5 px-7 rounded-full transition-all duration-300 flex items-center gap-2 shadow-xs cursor-pointer"
-            >
-              <span>Բոլոր նորությունները</span>
-              <span className="text-lg">›</span>
-            </a>
+          {/* Աստղեր */}
+          <div className="flex justify-center items-center gap-1 mb-4 md:mb-8">
+            {[...Array(5)].map((_, i) => (
+              <span key={i} className="text-[#FFD700] text-lg sm:text-xl md:text-2xl drop-shadow-xs">★</span>
+            ))}
           </div>
 
-          {/* Բեռնման վիճակ (Loading) */}
-          {loading ? (
-            <div className="flex justify-center items-center py-20">
-              <p className="text-gray-500 font-medium text-lg">Բեռնվում է...</p>
-            </div>
-          ) : (
-            /* Նորությունների քարտերի ցանց (Grid) */
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {newsData.map((item) => (
-                <div 
-                  key={item.id} 
-                  className="bg-white rounded-[28px] overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between border border-gray-100 group cursor-pointer"
-                >
-                  {/* Նկար */}
-                  <div className="w-full h-[260px] overflow-hidden bg-gray-100">
-                    <img 
-                      src={item.image} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                  </div>
+          {/* Մեջբերում */}
+          <div className="relative px-4 sm:px-6 md:px-12 mb-6 md:mb-10 w-full">
+            <span className="absolute left-0 sm:left-2 -top-3 text-[#5E1EEB] text-3xl sm:text-4xl md:text-5xl font-serif opacity-90 select-none">“</span>
+            
+            <p className="text-xs sm:text-sm md:text-xl text-[#1C1C1E] font-medium leading-relaxed">
+              {testimonials[currentIndex].quote}
+            </p>
 
-                  {/* Բովանդակություն */}
-                  <div className="p-7 flex flex-col flex-1 justify-between">
-                    <div>
-                      {/* Կատեգորիա */}
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className={`w-1 h-4 rounded-full ${item.categoryColor || 'bg-[#5E1EEB]'}`}></span>
-                        <span className="text-xs font-semibold text-gray-400 tracking-wide uppercase">
-                          {item.category}
-                        </span>
-                      </div>
+            <span className="absolute right-0 sm:right-2 -bottom-5 text-[#5E1EEB] text-3xl sm:text-4xl md:text-5xl font-serif opacity-90 select-none">”</span>
+          </div>
 
-                      {/* Վերնագիր */}
-                      <h3 className="text-lg md:text-xl font-bold text-[#1C1C1E] mb-6 leading-snug group-hover:text-[#5E1EEB] transition-colors">
-                        {item.title}
-                      </h3>
-                    </div>
+          {/* Հեղինակ */}
+          <div className="mb-6 md:mb-10">
+            <h4 className="text-sm sm:text-base md:text-lg font-bold text-[#1C1C1E] mb-1">
+              {testimonials[currentIndex].author}
+            </h4>
+            <p className="text-[10px] sm:text-[11px] md:text-sm text-gray-400 font-medium px-4">
+              {testimonials[currentIndex].title}
+            </p>
+          </div>
 
-                    {/* Ամսաթիվ */}
-                    <div className="text-xs font-medium text-gray-400 pt-4 border-t border-gray-100">
-                      {item.date}
-                    </div>
-                  </div>
-
-                </div>
-              ))}
-            </div>
-          )}
+          {/* Նավիգացիայի կետեր */}
+          <div className="flex justify-center items-center gap-2">
+            {testimonials.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentIndex(idx)}
+                className={`h-2 md:h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                  currentIndex === idx ? 'w-5 sm:w-6 md:w-8 bg-[#5E1EEB]' : 'w-2 md:w-2.5 bg-gray-300 hover:bg-gray-400'
+                }`}
+                aria-label={`Go to slide ${idx + 1}`}
+              />
+            ))}
+          </div>
 
         </div>
       </section>

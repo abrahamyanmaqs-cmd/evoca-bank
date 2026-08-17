@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { db } from '../../../firebase';
 import { collection, getDocs, doc, writeBatch } from 'firebase/firestore';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -35,7 +35,6 @@ export default function CardSlider() {
   const [mainSwiper, setMainSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0);
 
-  // 3D Tilt state
   const [tiltStyle, setTiltStyle] = useState({});
 
   useEffect(() => {
@@ -70,8 +69,8 @@ export default function CardSlider() {
     fetchOrSeedCards();
   }, []);
 
-  // 3D Շարժման ֆունկցիա (ማկնիկի տեղաշարժով պտույտ)
   const handleMouseMove = (e) => {
+    if (window.innerWidth < 768) return; // Անջատել 3D tilt-ը հեռախոսների վրա կատարողականի և հարմարավետության համար
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -80,7 +79,7 @@ export default function CardSlider() {
     const centerX = rect.width / 2;
     const centerY = rect.height / 2;
     
-    const rotateX = -((y - centerY) / centerY) * 12; // Որքան մեծ, այնքան ուժեղ է թեքվում
+    const rotateX = -((y - centerY) / centerY) * 12;
     const rotateY = ((x - centerX) / centerX) * 12;
 
     setTiltStyle({
@@ -105,69 +104,71 @@ export default function CardSlider() {
   }
 
   return (
-    <section className="bg-[#F2F5FA] py-20 px-4 md:px-12 min-h-[600px] flex items-center select-none">
-      <div className="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+    <section className="bg-[#F2F5FA] py-8 md:py-20 px-2 sm:px-4 md:px-12 min-h-[500px] flex items-center select-none w-full overflow-hidden">
+      <div className="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
         
-        {/* 1. ՁԱԽ ԿՈՂՄ՝ ՈՒՂՂԱՀԱՅԱՑ SLIDER */}
-        <div className="lg:col-span-3 flex flex-col items-center relative h-[380px]">
+        {/* 1. ՄԻՆԻ ՍԼԱՅԴԵՐ (Հեռախոսի վրա՝ հորիզոնական, լայնությունը հարմարեցված 300px-ին) */}
+        <div className="lg:col-span-3 flex flex-row lg:flex-col items-center justify-center relative w-full h-auto lg:h-[380px] gap-2 lg:gap-0">
           <button 
             onClick={() => verticalSwiper?.slidePrev()}
-            className="z-10 mb-2 p-2 text-[#5E2BFF] hover:scale-125 transition-transform duration-200 cursor-pointer"
+            className="z-10 p-1 lg:mb-2 text-[#5E2BFF] hover:scale-125 transition-transform duration-200 cursor-pointer"
           >
-            <svg className="w-6 h-6 stroke-current stroke-[3]" fill="none" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 lg:w-6 lg:h-6 stroke-current stroke-[3] rotate-[-90deg] lg:rotate-0" fill="none" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 15l7-7 7 7" />
             </svg>
           </button>
 
-          <Swiper
-            direction="vertical"
-            slidesPerView={3}
-            spaceBetween={15}
-            centeredSlides={true}
-            onSwiper={setVerticalSwiper}
-            onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
-            modules={[Controller]}
-            className="h-full w-full"
-          >
-            {cardsData.map((card, idx) => (
-              <SwiperSlide key={card.id} className="cursor-pointer flex flex-col items-center justify-center">
-                <div 
-                  onMouseEnter={() => {
-                    setActiveIndex(idx);
-                    verticalSwiper?.slideTo(idx);
-                    mainSwiper?.slideTo(idx);
-                  }}
-                  className={`transition-all duration-300 flex flex-col items-center p-1 ${
-                    activeIndex === idx 
-                      ? 'scale-105 opacity-100 font-bold' 
-                      : 'scale-90 opacity-40 hover:opacity-75'
-                  }`}
-                >
-                  <img 
-                    src={card.img} 
-                    alt={card.title} 
-                    className="w-24 h-auto rounded-lg shadow-md mb-1 object-contain pointer-events-none"
-                  />
-                  <span className="text-[11px] text-[#2B2B2B] text-center line-clamp-1">
-                    {card.title}
-                  </span>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+          <div className="w-[240px] sm:w-[280px] lg:w-full lg:max-w-none lg:h-full overflow-hidden">
+            <Swiper
+              direction={window.innerWidth >= 1024 ? "vertical" : "horizontal"}
+              slidesPerView={3}
+              spaceBetween={10}
+              centeredSlides={true}
+              onSwiper={setVerticalSwiper}
+              onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
+              modules={[Controller]}
+              className="h-full w-full"
+            >
+              {cardsData.map((card, idx) => (
+                <SwiperSlide key={card.id} className="cursor-pointer flex flex-col items-center justify-center">
+                  <div 
+                    onClick={() => {
+                      setActiveIndex(idx);
+                      verticalSwiper?.slideTo(idx);
+                      mainSwiper?.slideTo(idx);
+                    }}
+                    className={`transition-all duration-300 flex flex-col items-center p-1 ${
+                      activeIndex === idx 
+                        ? 'scale-105 opacity-100 font-bold' 
+                        : 'scale-90 opacity-40 hover:opacity-75'
+                    }`}
+                  >
+                    <img 
+                      src={card.img} 
+                      alt={card.title} 
+                      className="w-16 sm:w-20 md:w-24 h-auto rounded-lg shadow-md mb-1 object-contain pointer-events-none"
+                    />
+                    <span className="text-[9px] sm:text-[10px] md:text-[11px] text-[#2B2B2B] text-center line-clamp-1">
+                      {card.title}
+                    </span>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
 
           <button 
             onClick={() => verticalSwiper?.slideNext()}
-            className="z-10 mt-2 p-2 text-[#5E2BFF] hover:scale-125 transition-transform duration-200 cursor-pointer"
+            className="z-10 p-1 lg:mt-2 text-[#5E2BFF] hover:scale-125 transition-transform duration-200 cursor-pointer"
           >
-            <svg className="w-6 h-6 stroke-current stroke-[3]" fill="none" viewBox="0 0 24 24">
+            <svg className="w-5 h-5 lg:w-6 lg:h-6 stroke-current stroke-[3] rotate-[-90deg] lg:rotate-0" fill="none" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
             </svg>
           </button>
         </div>
 
-        {/* 2. ՄԵՋՏԵՂԻ ՄԱՍ՝ ԳԼԽԱՎՈՐ ՄԵԾ ՔԱՐՏԸ (3D Էֆեկտով) */}
-        <div className="lg:col-span-5 flex justify-center items-center py-6">
+        {/* 2. ՄԵՋՏԵՂԻ ՄԱՍ՝ ԳԼԽԱՎՈՐ ՄԵԾ ՔԱՐՏԸ (300px հեռախոսների համար անվտանգ չափսերով) */}
+        <div className="lg:col-span-5 flex justify-center items-center py-2">
           <Swiper
             onSwiper={setMainSwiper}
             allowTouchMove={false}
@@ -177,17 +178,17 @@ export default function CardSlider() {
             {cardsData.map((card) => (
               <SwiperSlide key={card.id} className="flex justify-center items-center">
                 <div 
-                  className="relative group cursor-pointer py-4"
+                  className="relative group cursor-pointer py-2 w-full flex justify-center"
                   onMouseMove={handleMouseMove}
                   onMouseLeave={handleMouseLeave}
                   style={{ perspective: '1000px' }}
                 >
-                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[80%] h-8 bg-black/10 blur-xl rounded-full transition-all duration-300"></div>
+                  <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-[70%] h-6 bg-black/10 blur-xl rounded-full transition-all duration-300"></div>
                   <img 
                     src={card.img} 
                     alt={card.title} 
                     style={tiltStyle}
-                    className="w-full max-w-[360px] sm:max-w-[400px] h-auto object-contain drop-shadow-xl"
+                    className="w-full max-w-[240px] sm:max-w-[320px] md:max-w-[400px] h-auto object-contain drop-shadow-xl"
                   />
                 </div>
               </SwiperSlide>
@@ -195,20 +196,20 @@ export default function CardSlider() {
           </Swiper>
         </div>
 
-        {/* 3. ԱՋ ԿՈՂՄ՝ ՔԱՐՏԻ ՏԵՔՍՏՆ ՈՒ «ՄԱՆՐԱՄԱՍՆ» ԿՈՃԱԿԸ */}
-        <div className="lg:col-span-4 flex flex-col justify-center space-y-6 text-left pl-0 lg:pl-6">
-          <h2 className="text-3xl font-extrabold text-[#1C1C1E] tracking-tight">
+        {/* 3. ԱՋ ԿՈՂՄ՝ ՏԵՔՍՏ ԵՒ ԿՈՃԱԿ (Օպտիմիզացված փոքր էկրանների համար) */}
+        <div className="lg:col-span-4 flex flex-col justify-center space-y-3 md:space-y-6 text-center lg:text-left px-2 lg:pl-6">
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold text-[#1C1C1E] tracking-tight">
             {cardsData[activeIndex]?.title}
           </h2>
           
-          <p className="text-[#636366] text-sm leading-relaxed min-h-[90px]">
+          <p className="text-[#636366] text-[11px] sm:text-xs md:text-sm leading-relaxed min-h-[60px] md:min-h-[90px]">
             {cardsData[activeIndex]?.description}
           </p>
 
-          <div>
+          <div className="flex justify-center lg:justify-start">
             <a
               href="#"
-              className="inline-block bg-[#5E2BFF] hover:bg-[#4A1EEB] text-white text-sm font-semibold py-3.5 px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0"
+              className="inline-block bg-[#5E2BFF] hover:bg-[#4A1EEB] text-white text-xs sm:text-sm font-semibold py-3 px-6 sm:px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300"
             >
               Մանրամասն
             </a>

@@ -1,4 +1,4 @@
- import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const faces = [
   "https://www.evoca.am/img/temp/biometric/face1.png",
@@ -23,16 +23,16 @@ export default function BiometricSection() {
   }, []);
 
   return (
-    <section className="bg-white py-20 px-6 md:px-16 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+    <section className="bg-white py-12 md:py-20 px-3 sm:px-6 md:px-16 overflow-x-hidden w-full select-none">
+      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12 w-full">
         
         {/* Ձախ մաս (Հետևի կետավոր ֆոն, շրջված մանուշակագույն եռանկյուն և վեր բարձրացրած դեմք) */}
-        <div className="lg:w-1/2 relative flex justify-center items-center">
-          <div className="relative w-[380px] h-[380px] md:w-[450px] md:h-[450px] flex justify-center items-center">
+        <div className="lg:w-1/2 relative flex justify-center items-center w-full">
+          <div className="relative w-[280px] h-[280px] sm:w-[360px] sm:h-[360px] md:w-[450px] md:h-[450px] flex justify-center items-center">
             
             {/* Հետևի կետավոր շրջանաձև ֆոն (Pattern) */}
             <div className="absolute inset-0 flex justify-center items-center opacity-30 pointer-events-none">
-              <div className="w-[360px] h-[360px] rounded-full border border-dashed border-[#9B51E0]"></div>
+              <div className="w-[260px] h-[260px] sm:w-[340px] sm:h-[340px] md:w-[360px] md:h-[360px] rounded-full border border-dashed border-[#9B51E0]"></div>
             </div>
 
             {/* Շրջված եռանկյուն */}
@@ -44,8 +44,8 @@ export default function BiometricSection() {
               }}
             ></div>
 
-            {/* Նկարի և գծերի միացյալ բլոկ (Մի փոքր բարձրացրած վերև՝ -translate-y-4) */}
-            <div className={`relative z-10 w-full h-full flex justify-center items-center -translate-y-4 transition-opacity duration-600 ${fade ? 'opacity-100' : 'opacity-0'}`}>
+            {/* Նկարի և գծերի միացյալ բլոկ */}
+            <div className={`relative z-10 w-full h-full flex justify-center items-center -translate-y-2 sm:-translate-y-4 transition-opacity duration-600 ${fade ? 'opacity-100' : 'opacity-0'}`}>
               
               {/* Անիմացիոն դեմքի նկարը */}
               <img
@@ -97,29 +97,29 @@ export default function BiometricSection() {
         </div>
 
         {/* Աջ մաս (Վերնագիր, նկարագրություն, QR կոդ և կոճակ) */}
-        <div className="lg:w-1/2 space-y-6">
-          <h2 className="text-3xl md:text-[38px] font-medium text-[#222222] font-['Montserratarm-Medium',Helvetica,Arial,sans-serif] leading-tight">
+        <div className="lg:w-1/2 space-y-4 sm:space-y-6 text-center lg:text-left w-full px-2">
+          <h2 className="text-xl sm:text-2xl md:text-[38px] font-medium text-[#222222] font-['Montserratarm-Medium',Helvetica,Arial,sans-serif] leading-snug md:leading-tight">
             Դարձիր Evocabank-ի հաճախորդ բիոմետրիկ նույնականացմամբ
           </h2>
-          <p className="text-gray-600 text-base md:text-[18px] font-['Montserratarm-Medium',Helvetica,Arial,sans-serif] leading-relaxed max-w-xl">
+          <p className="text-gray-600 text-xs sm:text-sm md:text-[18px] font-['Montserratarm-Medium',Helvetica,Arial,sans-serif] leading-relaxed max-w-xl mx-auto lg:mx-0">
             Սկանավորիր QR կոդը, ներբեռնիր EvocaTOUCH հարմարավետ հավելվածը, ստեղծիր քո հաշիվը և ստացիր քարտ
           </p>
 
-          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-4">
+          <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 sm:gap-6 pt-2">
             {/* QR կոդի բլոկ */}
-            <div className="bg-white p-2.5 rounded-2xl shadow-md border border-gray-100">
+            <div className="bg-white p-2.5 rounded-2xl shadow-md border border-gray-100 shrink-0">
               <img
                 src="https://www.evoca.am/img/biometric-section-QR-Code.png"
                 alt="QR Code"
-                className="w-32 h-32 object-contain"
+                className="w-28 h-28 sm:w-32 sm:h-32 object-contain"
               />
             </div>
 
             {/* Կոճակ */}
-            <div>
+            <div className="w-full sm:w-auto">
               <a
                 href="#"
-                className="bg-[rgb(100,0,220)] hover:bg-[rgb(85,0,190)] text-white font-semibold px-8 py-3.5 rounded-full shadow-md transition-all duration-300 inline-flex items-center justify-center text-base"
+                className="bg-[rgb(100,0,220)] hover:bg-[rgb(85,0,190)] text-white font-semibold px-8 py-3.5 rounded-full shadow-md transition-all duration-300 inline-flex items-center justify-center text-sm sm:text-base w-full sm:w-auto"
               >
                 Իմանալ ավելին
               </a>

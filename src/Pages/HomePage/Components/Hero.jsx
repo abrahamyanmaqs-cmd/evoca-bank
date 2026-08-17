@@ -1,4 +1,4 @@
- import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const slides = [
   {
@@ -78,33 +78,39 @@ export default function Hero() {
     setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
+  // Ավտոմատ սլայդերի ավելացում
+  useEffect(() => {
+    const timer = setInterval(nextSlide, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
   const current = slides[currentIndex];
 
   return (
-    <section className={`relative ${current.bgColor} pt-12 pb-24 px-6 md:px-16 rounded-b-[40px] overflow-hidden transition-colors duration-500`}>
-      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center justify-between min-h-[380px]">
+    <section className={`relative ${current.bgColor} pt-6 pb-16 md:pt-12 md:pb-24 px-4 sm:px-6 md:px-16 rounded-b-[24px] md:rounded-b-[40px] overflow-x-hidden transition-colors duration-500 w-full`}>
+      <div className="max-w-[1440px] mx-auto flex flex-col lg:flex-row items-center justify-between min-h-[300px] md:min-h-[380px] w-full">
         
-        {/* Ձախ մաս (Վերնագիր, նկարագրություն և կոճակ) */}
-        <div className="lg:w-1/2 mb-10 lg:mb-0 space-y-6 pl-4 lg:pl-10">
-          <h1 className={`text-3xl md:text-[36px] font-medium ${current.textColor} font-['Montserratarm-Medium',Helvetica,Arial,sans-serif] tracking-tight`}>
+        {/* Ձախ մաս՝ Տեքստ և Կոճակ */}
+        <div className="lg:w-1/2 mb-8 lg:mb-0 space-y-3 md:space-y-6 px-2 text-center lg:text-left w-full">
+          <h1 className={`text-xl sm:text-2xl md:text-[36px] font-medium ${current.textColor} tracking-tight leading-snug`}>
             {current.title}
           </h1>
-          <p className={`${current.textColor} text-base md:text-[18px] font-['Montserratarm-Medium',Helvetica,Arial,sans-serif] max-w-lg leading-relaxed opacity-90`}>
+          <p className={`${current.textColor} text-xs sm:text-sm md:text-[18px] max-w-xl leading-relaxed opacity-95 mx-auto lg:mx-0 line-clamp-3 sm:line-clamp-none`}>
             {current.description}
           </p>
-          <div>
+          <div className="pt-2 flex justify-center lg:justify-start">
             <a
               href="#"
-              className="bg-[rgb(100,0,220)] hover:bg-[rgb(85,0,190)] text-white font-semibold px-8 py-3 rounded-full shadow-md transition-all duration-300 inline-flex items-center justify-center text-base"
+              className="bg-[rgb(100,0,220)] hover:bg-[rgb(85,0,190)] text-white font-semibold px-6 py-2.5 md:px-8 md:py-3.5 rounded-full shadow-md transition-all duration-300 inline-flex items-center justify-center text-xs sm:text-sm md:text-base"
             >
               {current.buttonText}
             </a>
           </div>
         </div>
 
-        {/* Աջ մաս (Քարտի վիզուալ պատկեր) */}
-        <div className="lg:w-1/2 flex justify-center relative pr-4 lg:pr-10">
-          <div className="relative w-full max-w-lg transform rotate-3 hover:rotate-0 transition-transform duration-500">
+        {/* Աջ մաս՝ Պատկեր */}
+        <div className="lg:w-1/2 flex justify-center relative mt-2 lg:mt-0 w-full max-w-lg">
+          <div className="relative w-full max-w-[220px] sm:max-w-[260px] lg:max-w-lg">
             <img
               src={current.image} 
               alt={current.title}
@@ -115,35 +121,35 @@ export default function Hero() {
 
       </div>
 
-      {/* Ներքևի սլայդերի նավիգացիա (Սլաքներ և կետեր) */}
-      <div className="absolute bottom-6 left-0 right-0 flex items-center justify-center space-x-4 md:space-x-6">
-        {/* Ձախ սլաք */}
+      {/* Նավիգացիա (Սլայդերների կետեր) - ավելի մեծ և հարմար */}
+      <div className="absolute bottom-3 md:bottom-6 left-0 right-0 flex items-center justify-center space-x-2 md:space-x-6">
         <button 
           onClick={prevSlide}
-          className="text-[rgb(100,0,220)] hover:text-purple-900 font-bold text-xl transition-colors cursor-pointer bg-white/60 hover:bg-white p-2 rounded-full shadow"
+          aria-label="Previous slide"
+          className="text-[rgb(100,0,220)] hover:text-purple-900 font-bold text-lg md:text-xl transition-colors cursor-pointer bg-white/70 hover:bg-white p-1.5 md:p-2 rounded-full shadow"
         >
           &larr;
         </button>
 
-        {/* Կետեր */}
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center space-x-1.5 md:space-x-2">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentIndex(index)}
+              aria-label={`Go to slide ${index + 1}`}
               className={`transition-all duration-300 rounded-full cursor-pointer ${
                 currentIndex === index 
-                  ? "w-3 h-3 bg-[rgb(100,0,220)] ring-2 ring-white" 
+                  ? "w-2.5 h-2.5 md:w-3 md:h-3 bg-[rgb(100,0,220)] ring-2 ring-white" 
                   : "w-2 h-2 bg-gray-500/70 hover:bg-[rgb(100,0,220)]"
               }`}
             />
           ))}
         </div>
 
-        {/* Աջ սլաք */}
         <button 
           onClick={nextSlide}
-          className="text-[rgb(100,0,220)] hover:text-purple-900 font-bold text-xl transition-colors cursor-pointer bg-white/60 hover:bg-white p-2 rounded-full shadow"
+          aria-label="Next slide"
+          className="text-[rgb(100,0,220)] hover:text-purple-900 font-bold text-lg md:text-xl transition-colors cursor-pointer bg-white/70 hover:bg-white p-1.5 md:p-2 rounded-full shadow"
         >
           &rarr;
         </button>
