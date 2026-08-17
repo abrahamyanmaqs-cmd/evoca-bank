@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom'; // Ներմուծում ենք Link-ը
 
 const partnersData = [
   "https://www.evoca.am/images-cache/partners/1/17072192635138/185x80_grayscale.png",
@@ -63,10 +64,13 @@ export default function PartnersSection() {
             Դարձեք Evocabank-ի Գործընկեր և եկեք միասին գնանք դեպի գունեղ նոր իրականություն: Դառնալով Evoca ընտանիքի անդամ՝ Դուք մուտք կգործեք ժամանակակից և յուրահատուկ աշխարհ:
           </p>
 
-          <button className="bg-[#F2EEFF] text-[#5E1EEB] hover:bg-[#5E1EEB] hover:text-white font-bold text-xs sm:text-sm md:text-base py-3 md:py-4 px-6 sm:px-8 rounded-full transition-all duration-300 cursor-pointer flex items-center gap-2 shadow-sm">
+          <Link 
+            to="/partners" 
+            className="bg-[#F2EEFF] text-[#5E1EEB] hover:bg-[#5E1EEB] hover:text-white font-bold text-xs sm:text-sm md:text-base py-3 md:py-4 px-6 sm:px-8 rounded-full transition-all duration-300 cursor-pointer flex items-center gap-2 shadow-sm"
+          >
             <span>Բոլոր գործընկերները</span>
             <span className="text-base md:text-xl">›</span>
-          </button>
+          </Link>
         </div>
 
         {/* Աջ մաս՝ Սլայդեր */}
