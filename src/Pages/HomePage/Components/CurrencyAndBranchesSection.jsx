@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from "react-router-dom";
 
 export default function CurrencyAndBranchesSection() {
   const [activeTab, setActiveTab] = useState('cash');
@@ -155,10 +156,12 @@ export default function CurrencyAndBranchesSection() {
               </div>
             </div>
 
-            <button className="w-full bg-[#F2EEFF] text-[#5E1EEB] hover:bg-[#5E1EEB] hover:text-white font-bold text-xs md:text-sm py-3 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-xs cursor-pointer">
-              <span>Դիտել քարտեզը</span>
-              <span className="text-base">›</span>
-            </button>
+            <Link 
+  to="/usersmap" 
+  className="w-full bg-[#F2EEFF] text-[#5E1EEB] hover:bg-[#5E1EEB] hover:text-white font-bold text-xs md:text-sm py-3 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-xs cursor-pointer no-underline">
+  <span>Դիտել քարտեզը</span>
+  <span className="text-base">›</span>
+</Link>
 
           </div>
 
