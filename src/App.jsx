@@ -39,6 +39,7 @@ import AboutCard6 from "./Pages3/FourthinSeventhPage/AboutCard6";
 import Avandnerrrr from "./Pages3/FourthinEightPage/Avant";
  import EvocaOnline from "./Pages/FiftinPage/EvocaOnline";
  import Chat from "./Chat";
+ import UsersMap from "./Pages3/FifthenTwothPage/UsersMap";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -95,6 +96,7 @@ function App() {
               <Route path="/unionpay" element={<AboutCard6/>} />
                <Route path="/deposits" element={<Avandnerrrr/>} />
                <Route path="/evocaonline" element={<EvocaOnline />} />
+             <Route path="usersmap" element={<UsersMap />} />
 
 
 

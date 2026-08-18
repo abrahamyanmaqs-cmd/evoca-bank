@@ -7,7 +7,7 @@ const newsItems = [
     category: "Բանկային",
     title: "Հայաստանում գործարկվեց Firebird AI-ի «ԱԲ գործարանը»",
     image: "https://www.evoca.am/images-cache/news/1/17864472573391/439x320.png",
-    link: "/  news"
+    link: "/news"
   },
   {
     id: 2,
