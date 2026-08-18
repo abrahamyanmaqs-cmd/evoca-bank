@@ -40,7 +40,6 @@ import Avandnerrrr from "./Pages3/FourthinEightPage/Avant";
  import EvocaOnline from "./Pages/FiftinPage/EvocaOnline";
  import Chat from "./Chat";
  import UsersMap from "./Pages3/FifthenTwothPage/UsersMap";
-//2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
