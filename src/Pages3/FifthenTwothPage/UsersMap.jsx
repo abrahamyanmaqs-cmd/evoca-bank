@@ -45,7 +45,7 @@ export default function UsersMap() {
   const [activeUsers, setActiveUsers] = useState([]);
   const [myLocation, setMyLocation] = useState(null);
 
-  // 1. Աութենտիկացիա և GPS Լոկացիայի ուղարկում բազա
+ 
   useEffect(() => {
     let watchId = null;
 
@@ -55,7 +55,7 @@ export default function UsersMap() {
       if (user) {
         const userRef = doc(db, "users", user.uid);
         
-        // Անմիջապես վերցնում ենք բրաուզերի GPS-ը և գրում բազա
+      
         if ("geolocation" in navigator) {
           navigator.geolocation.getCurrentPosition(
             async (pos) => {
@@ -74,7 +74,7 @@ export default function UsersMap() {
             { enableHighAccuracy: true }
           );
 
-          // Շարժվելիս live թարմացում
+ 
           watchId = navigator.geolocation.watchPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
