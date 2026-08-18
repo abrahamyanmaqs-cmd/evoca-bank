@@ -38,6 +38,7 @@ import AboutCard5 from "./Pages3/FourthinSixthPage/AboutCard5";
 import AboutCard6 from "./Pages3/FourthinSeventhPage/AboutCard6";
 import Avandnerrrr from "./Pages3/FourthinEightPage/Avant";
  import EvocaOnline from "./Pages/FiftinPage/EvocaOnline";
+ import Chat from "./Chat";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -55,6 +56,7 @@ import Layout from "./Components/Layout";
 function App() {
   return (
     <BrowserRouter>
+    <Chat isOpen={true} />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />
