@@ -37,6 +37,7 @@ import AboutCard4 from "./Pages3/FourthinFifthPage/AboutCard4";
 import AboutCard5 from "./Pages3/FourthinSixthPage/AboutCard5";
 import AboutCard6 from "./Pages3/FourthinSeventhPage/AboutCard6";
 import Avandnerrrr from "./Pages3/FourthinEightPage/Avant";
+ import EvocaOnline from "./Pages/FiftinPage/EvocaOnline";
 //2
 import News from "./Pages/SixthPage/News";  
 import Blog from "./Pages/SeventPage/Blog";
@@ -91,6 +92,7 @@ function App() {
                <Route path="/mortgage" element={<AboutCard5/>} />
               <Route path="/unionpay" element={<AboutCard6/>} />
                <Route path="/deposits" element={<Avandnerrrr/>} />
+               <Route path="/evocaonline" element={<EvocaOnline />} />
 
 
 

@@ -42,12 +42,12 @@ export default function Navbar() {
 
         {/* EvocaONLINE կոճակ */}
         <div>
-          <a
-            href="#"
-            className="bg-[#5E1EEB] hover:bg-[#5217ce] text-white font-semibold px-7 py-2.5 rounded-full shadow-md transition-all duration-300 text-sm md:text-base inline-flex items-center justify-center cursor-pointer"
-          >
-            EvocaONLINE
-          </a>
+          <Link
+  to="/evocaonline"
+  className="bg-[#5E1EEB] hover:bg-[#5217ce] text-white font-semibold px-5 py-2 rounded-full shadow-md transition-all duration-300 text-xs inline-flex items-center justify-center cursor-pointer ml-2"
+>
+  EvocaONLINE
+</Link>
         </div>
 
       </div>
