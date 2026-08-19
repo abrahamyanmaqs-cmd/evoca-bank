@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Ներմուծում ենք Link-ը
-
-const partnersData = [
-  "https://www.evoca.am/images-cache/partners/1/17072192635138/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/17072192435541/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/16104577054001/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/16104583322099/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/17689930369925/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/16104594273635/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/1610459808737/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/16104599802947/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/16104603665095/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/16104604109064/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/16104604382658/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/17104032198171/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/17077436606929/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/17107493820339/185x80_grayscale.png",
-  "https://www.evoca.am/images-cache/partners/1/17072192942611/185x80_grayscale.png"
-];
+import { Link } from 'react-router-dom';
+import { db } from "../../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի տեղադրության
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 export default function PartnersSection() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(1);
+  const [partnersData, setPartnersData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const initialPartners = [
+    "https://www.evoca.am/images-cache/partners/1/17072192635138/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/17072192435541/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/16104577054001/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/16104583322099/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/17689930369925/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/16104594273635/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/1610459808737/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/16104599802947/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/16104603665095/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/16104604109064/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/16104604382658/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/17104032198171/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/17077436606929/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/17107493820339/185x80_grayscale.png",
+    "https://www.evoca.am/images-cache/partners/1/17072192942611/185x80_grayscale.png"
+  ];
 
   useEffect(() => {
     const handleResize = () => {
@@ -36,6 +40,32 @@ export default function PartnersSection() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  useEffect(() => {
+    const fetchPartners = async () => {
+      try {
+        const colRef = collection(db, "partners");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          // Եթե հավաքածուն դատարկ է, ավելացնում ենք սկզբնական լոգոները
+          for (const url of initialPartners) {
+            await addDoc(colRef, { url });
+          }
+          const newSnapshot = await getDocs(colRef);
+          setPartnersData(newSnapshot.docs.map(doc => doc.data().url));
+        } else {
+          setPartnersData(snapshot.docs.map(doc => doc.data().url));
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPartners();
+  }, []);
+
   const handleNext = () => {
     setCurrentIndex((prevIndex) => 
       prevIndex + itemsPerPage >= partnersData.length ? 0 : prevIndex + itemsPerPage
@@ -47,6 +77,8 @@ export default function PartnersSection() {
       prevIndex - itemsPerPage < 0 ? Math.max(0, partnersData.length - itemsPerPage) : prevIndex - itemsPerPage
     );
   };
+
+  if (loading) return <div className="text-center py-20">Բեռնվում է...</div>;
 
   const visiblePartners = partnersData.slice(currentIndex, currentIndex + itemsPerPage);
 
