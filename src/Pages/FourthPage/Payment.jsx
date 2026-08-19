@@ -1,10 +1,13 @@
- import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { db } from "../../firebase";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 const Payment = () => {
-  // Վիճակ (state), որը պահում է ընտրված քարտի ID-ն
-  const [selectedId, setSelectedId] = useState(2); // Նկարում երկրորդն է նշድված
+  const [selectedId, setSelectedId] = useState(2);
+  const [paymentCategories, setPaymentCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const paymentCategories = [
+  const initialCategories = [
     {
       id: 1,
       title: "EVOCABANK",
@@ -42,6 +45,33 @@ const Payment = () => {
     },
   ];
 
+  useEffect(() => {
+    const fetchPayments = async () => {
+      try {
+        const colRef = collection(db, "payments");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          for (const item of initialCategories) {
+            await addDoc(colRef, item);
+          }
+          const newSnapshot = await getDocs(colRef);
+          setPaymentCategories(newSnapshot.docs.map(doc => ({ firebaseId: doc.id, ...doc.data() })));
+        } else {
+          setPaymentCategories(snapshot.docs.map(doc => ({ firebaseId: doc.id, ...doc.data() })));
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPayments();
+  }, []);
+
+  if (loading) return <div className="text-center py-20">Բեռնվում է...</div>;
+
   return (
     <div className="w-full bg-[#F8F9FA] font-sans min-h-screen py-12 md:py-20">
       <div className="max-w-[1200px] mx-auto px-4 md:px-6">
@@ -57,7 +87,7 @@ const Payment = () => {
             const isSelected = selectedId === item.id;
             return (
               <div
-                key={item.id}
+                key={item.firebaseId || item.id}
                 onClick={() => setSelectedId(item.id)}
                 className={`bg-white rounded-[28px] p-8 shadow-sm transition-all duration-300 flex flex-col items-center justify-between text-center h-[260px] cursor-pointer relative ${
                   isSelected
