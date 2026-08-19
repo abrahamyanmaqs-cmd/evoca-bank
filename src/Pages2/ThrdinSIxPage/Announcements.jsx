@@ -1,19 +1,48 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from "../../firebase"; // Ճշգրտիր ուղին ըստ քո նախագծի
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 import { FiChevronDown, FiArrowLeft, FiArrowRight, FiCalendar } from 'react-icons/fi';
 
 export default function Announcements() {
   const [currentPage, setCurrentPage] = useState(1);
   const [openIndices, setOpenIndices] = useState({});
+  const [announcementsList, setAnnouncementsList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Օրինակելի տվյալներ հայտարարությունների համար
-  const announcementsList = [
-    { title: '«ԷՎՈԿԱԲԱՆԿ» ԲԲԸ Բաժնետերերի տարեկան ընդհանուր ժողով', date: '27.05.2026' },
-    { title: 'Գործարքների արգելափակում ֆունկցիոնալ', date: '26.06.2026' },
-    { title: '«ԷՎՈԿԱԲԱՆԿ» ՓԲԸ-ի Բաժնետերերի տարեկան ընդհանուր ժողով', date: '04.06.2025' },
-    { title: '«ԷՎՈԿԱԲԱՆԿ» ՓԲԸ Բաժնետերերի արտահերթ ընդհանուր ժողով', date: '28.03.2025' },
-    { title: 'Արտաքին աուդիտի մրցույթի հայտարարություն', date: '30.12.2024' },
-    { title: 'Բանկի ներսում նույն արժույթով քարտերի միջև փոխանցման սակագինը սահմանվել է 0%', date: '12.11.2024' },
+  // Սկզբնական տվյալներ (եթե Firebase-ում դատարկ է)
+  const defaultAnnouncements = [
+    { id: "1", title: '«ԷՎՈԿԱԲԱՆԿ» ԲԲԸ Բաժնետերերի տարեկան ընդհանուր ժողով', date: '27.05.2026' },
+    { id: "2", title: 'Գործարքների արգելափակում ֆունկցիոնալ', date: '26.06.2026' },
+    { id: "3", title: '«ԷՎՈԿԱԲԱՆԿ» ՓԲԸ-ի Բաժնետերերի տարեկան ընդհանուր ժողով', date: '04.06.2025' },
+    { id: "4", title: '«ԷՎՈԿԱԲԱՆԿ» ՓԲԸ Բաժնետերերի արտահերթ ընդհանուր ժողով', date: '28.03.2025' },
+    { id: "5", title: 'Արտաքին աուդիտի մրցույթի հայտարարություն', date: '30.12.2024' },
+    { id: "6", title: 'Բանկի ներսում նույն արժույթով քարտերի միջև փոխանցման սակագինը սահմանվել է 0%', date: '12.11.2024' },
   ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const colRef = collection(db, "announcements");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          // Եթե հավաքածուն դատարկ է, լրացնում ենք default տվյալներով
+          for (const item of defaultAnnouncements) {
+            await setDoc(doc(colRef, item.id), item);
+          }
+          setAnnouncementsList(defaultAnnouncements);
+        } else {
+          setAnnouncementsList(snapshot.docs.map(doc => doc.data()));
+        }
+      } catch (error) {
+        console.error("Firebase error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const totalPages = 8;
 
@@ -23,6 +52,8 @@ export default function Announcements() {
       [index]: !prev[index],
     }));
   };
+
+  if (loading) return null;
 
   return (
     <section className="relative w-full min-h-screen bg-white py-10 px-4 md:px-8 overflow-hidden font-sans">
@@ -130,7 +161,7 @@ export default function Announcements() {
             const isOpen = openIndices[index] || false;
             return (
               <div 
-                key={index} 
+                key={item.id || index} 
                 className="border border-[#E5E2EC] rounded-2xl bg-white overflow-hidden transition-all shadow-sm hover:shadow-md"
               >
                 <button
