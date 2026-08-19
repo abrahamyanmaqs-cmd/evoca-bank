@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from "../../firebase";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 const ArjetghterAccordion = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const [accordionItems, setAccordionItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const accordionItems = [
+  const initialItems = [
     {
       title: "Ներդրումային ծառայությունների մատուցման կանոններ",
       sections: [
@@ -35,14 +39,40 @@ const ArjetghterAccordion = () => {
     }
   ];
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const colRef = collection(db, "arjetghter");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          for (const item of initialItems) {
+            await addDoc(colRef, item);
+          }
+          const newSnapshot = await getDocs(colRef);
+          setAccordionItems(newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        } else {
+          setAccordionItems(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  if (loading) return <div className="text-center py-20">Բեռնվում է...</div>;
+
   return (
     <div className="w-full font-['MontserratARM',sans-serif] py-12 px-4 md:px-10 text-[#1C1C1E]">
       <div className="max-w-[1440px] mx-auto">
-        
         <h2 className="text-[28px] md:text-[36px] font-black text-[#1C1C1E] mb-8 tracking-tight">
           ԱՆՀՐԱԺԵՇՏ ՏԵՂԵԿԱՏՎՈՒԹՅՈՒՆ
         </h2>
@@ -52,7 +82,7 @@ const ArjetghterAccordion = () => {
             const isOpen = openIndex === index;
             return (
               <div 
-                key={index}
+                key={item.id || index}
                 className={`border rounded-2xl overflow-hidden transition-all duration-300 ${
                   isOpen ? 'border-[#5E1EEB]/40 ring-2 ring-[#5E1EEB]/5' : 'border-[#E5E7EB] hover:border-[#D1D5DB]'
                 }`}
@@ -64,8 +94,6 @@ const ArjetghterAccordion = () => {
                   <span className={`text-[17px] md:text-[19px] font-bold transition-colors ${isOpen ? 'text-[#5E1EEB]' : 'text-[#1C1C1E]'}`}>
                     {item.title}
                   </span>
-                  
-                  {/* Կլոր կոճակով սլաք */}
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
                     isOpen ? 'bg-[#5E1EEB] text-white rotate-180' : 'bg-[#F3F0FD] text-[#5E1EEB]'
                   }`}>
@@ -84,9 +112,7 @@ const ArjetghterAccordion = () => {
                             <h3 className="text-[17px] md:text-[18px] font-bold text-[#5E1EEB] underline cursor-pointer hover:text-[#4a15bc]">
                               {sec.subtitle}
                             </h3>
-                            <p className="leading-relaxed">
-                              {sec.text}
-                            </p>
+                            <p className="leading-relaxed">{sec.text}</p>
                           </div>
                         ))}
                       </div>
@@ -95,11 +121,7 @@ const ArjetghterAccordion = () => {
                     {item.links && (
                       <div className="flex flex-col gap-3">
                         {item.links.map((linkText, idx) => (
-                          <a 
-                            key={idx} 
-                            href="#" 
-                            className="text-[#5E1EEB] font-semibold underline hover:text-[#4a15bc] transition-colors"
-                          >
+                          <a key={idx} href="#" className="text-[#5E1EEB] font-semibold underline hover:text-[#4a15bc] transition-colors">
                             {linkText}
                           </a>
                         ))}
@@ -111,7 +133,6 @@ const ArjetghterAccordion = () => {
             );
           })}
         </div>
-
       </div>
     </div>
   );
