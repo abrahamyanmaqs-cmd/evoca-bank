@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { db } from "../../firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 import { useFavoriteStore } from '../../useFavoriteStore';
 
 const CardsSection = () => {
   const [activeCategory, setActiveCategory] = useState("Բոլորը");
+  const [cardsData, setCardsData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const { favorites, toggleFavorite } = useFavoriteStore();
 
   const categories = [
@@ -18,7 +20,8 @@ const CardsSection = () => {
     "UnionPay"
   ];
 
-  const cardsData = [
+  // Քարտերի սկզբնական բազան, որն ավտոմատ կգնա Firebase, եթե հավաքածուն դատարկ է
+  const cardsDataItems = [
     {
       id: 1,
       title: "Evoca Travel Card",
@@ -238,10 +241,57 @@ const CardsSection = () => {
     }
   ];
 
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        // Օգտագործում ենք "bankCards" անունը, որպեսզի չխառնվի մյուսների հետ
+        const querySnapshot = await getDocs(collection(db, "bankCards"));
+        
+        if (querySnapshot.empty) {
+          for (const card of cardsDataItems) {
+            await addDoc(collection(db, "bankCards"), card);
+          }
+          setCardsData(cardsDataItems);
+        } else {
+          const cardsList = querySnapshot.docs.map(doc => ({
+            ...doc.data(),
+            firebaseId: doc.id
+          }));
+          cardsList.sort((a, b) => a.id - b.id);
+          setCardsData(cardsList);
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ից տվյալներ ստանիս:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
+  const handleCardDetails = async (card) => {
+    try {
+      await addDoc(collection(db, "cardClicks"), {
+        cardId: card.id,
+        title: card.title,
+        category: card.category,
+        clickedAt: new Date()
+      });
+      console.log("Սեղմման մասին տվյալն ուղարկվեց բազա");
+    } catch (error) {
+      console.error("Սխալ:", error);
+    }
+  };
+
   const filteredCards = cardsData.filter((card) => {
     if (activeCategory === "Բոլորը") return true;
     return card.category === activeCategory;
   });
+
+  if (loading) {
+    return <div className="text-center py-20 font-medium">Բեռնվում է...</div>;
+  }
 
   return (
     <div className="w-full bg-white py-12 md:py-16">
@@ -277,15 +327,14 @@ const CardsSection = () => {
 
             return (
               <div 
-                key={card.id} 
+                key={card.firebaseId || card.id} 
                 className="flex flex-col md:flex-row gap-8 w-full border-b border-gray-200 py-10 items-start"
               >
-                {/* ՆԿԱՐԻ ԲԼՈԿ՝ ԻՐ ԱՋ ԱՆԿՅԱՆ ՍՐՏԻԿՈՎ */}
                 <div className="w-full md:w-1/3 flex-shrink-0 relative">
                   <img 
                     src={card.image} 
                     alt={card.title} 
-                    className="w-full h-auto object-cover rounded-xl shadow-sm"
+                    className="w-full h-auto object-cover rounded-xl shadow-sm bg-gray-100"
                   />
                   <button
                     onClick={() => toggleFavorite(card)}
@@ -322,7 +371,10 @@ const CardsSection = () => {
                   )}
 
                   <div>
-                    <button className="bg-[#F3F0FD] text-[#5E1EEB] font-semibold px-6 py-3 rounded-full hover:bg-[#5E1EEB] hover:text-white transition-colors flex items-center gap-2 cursor-pointer">
+                    <button 
+                      onClick={() => handleCardDetails(card)}
+                      className="bg-[#F3F0FD] text-[#5E1EEB] font-semibold px-6 py-3 rounded-full hover:bg-[#5E1EEB] hover:text-white transition-colors flex items-center gap-2 cursor-pointer"
+                    >
                       Մանրամասն
                       <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M1 1L5 5L1 9" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

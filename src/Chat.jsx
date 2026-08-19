@@ -83,13 +83,14 @@ function VoicePlayer({ audioUrl, isMe }) {
 }
 
 // ==========================================
-// 2. ՀԻՄՆԱԿԱՆ CHAT COMPONENT
+// 2. ՀԻՄՆԱԿԱՆ CHAT COMPONENT (Ներառյալ Խումբը)
 // ==========================================
 export default function Chat() {
   const [isOpen, setIsOpen] = useState(false); 
   const [user, setUser] = useState(null); 
   const [usersList, setUsersList] = useState([]); 
   const [selectedUser, setSelectedUser] = useState(null); 
+  const [isGroupChat, setIsGroupChat] = useState(false); // Խմբային չատի ռեժիմ
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [unreadCounts, setUnreadCounts] = useState({}); 
@@ -158,6 +159,7 @@ export default function Chat() {
     };
   }, []);
 
+  // Չկարդացված նամակների քանակը անձնական չատերի համար
   useEffect(() => {
     if (!user) return;
 
@@ -177,28 +179,41 @@ export default function Chat() {
     return () => unsubscribes.forEach((unsub) => unsub());
   }, [usersList, user]);
 
+  // Նամակների բեռնում (Կամ անձնական, կամ խմբային)
   useEffect(() => {
-    if (!selectedUser || !user) return;
+    if (!user) return;
 
-    const roomId = [user.uid, selectedUser.uid].sort().join("_");
-    const q = query(collection(db, "chats", roomId, "messages"), orderBy("createdAt", "asc"));
+    let q;
+    if (isGroupChat) {
+      // Խմբային չատի հավաքածու
+      q = query(collection(db, "chats", "global_group_room", "messages"), orderBy("createdAt", "asc"));
+    } else if (selectedUser) {
+      // Անձնական չատի հավաքածու
+      const roomId = [user.uid, selectedUser.uid].sort().join("_");
+      q = query(collection(db, "chats", roomId, "messages"), orderBy("createdAt", "asc"));
+    } else {
+      return;
+    }
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const msgList = snapshot.docs.map(docItem => ({ id: docItem.id, ...docItem.data() }));
       setMessages(msgList);
       setTimeout(() => dummySpace.current?.scrollIntoView({ behavior: "smooth" }), 100);
 
-      snapshot.docs.forEach(async (messageDoc) => {
-        const data = messageDoc.data();
-        if (data.senderId === selectedUser.uid && !data.seen) {
-          await updateDoc(doc(db, "chats", roomId, "messages", messageDoc.id), { seen: true });
-        }
-      });
+      if (!isGroupChat && selectedUser) {
+        snapshot.docs.forEach(async (messageDoc) => {
+          const data = messageDoc.data();
+          if (data.senderId === selectedUser.uid && !data.seen) {
+            await updateDoc(doc(db, "chats", [user.uid, selectedUser.uid].sort().join("_"), "messages", messageDoc.id), { seen: true });
+          }
+        });
+      }
     });
 
     return () => unsubscribe();
-  }, [selectedUser, user]);
+  }, [selectedUser, isGroupChat, user]);
 
+  // Զանգերի լսում
   useEffect(() => {
     if (!user) return;
     const q = query(collection(db, "calls"));
@@ -232,7 +247,7 @@ export default function Chat() {
   }, [user, callState, activeCallId]);
 
   const startCall = async (type) => {
-    if (!selectedUser || !user) return;
+    if (!selectedUser || !user || isGroupChat) return;
 
     try {
       isLoggedRef.current = false;
@@ -410,27 +425,41 @@ export default function Chat() {
         const reader = new FileReader();
         reader.readAsDataURL(audioBlob);
         reader.onloadend = async () => {
-          const roomId = [user.uid, selectedUser.uid].sort().join("_");
-          await addDoc(collection(db, "chats", roomId, "messages"), {
-            audio: reader.result, senderId: user.uid, seen: false, createdAt: serverTimestamp()
+          let targetPath = isGroupChat ? "global_group_room" : [user.uid, selectedUser.uid].sort().join("_");
+          await addDoc(collection(db, "chats", targetPath, "messages"), {
+            audio: reader.result, 
+            senderId: user.uid, 
+            senderName: user.displayName,
+            senderPhoto: user.photoURL || DEFAULT_AVATAR,
+            seen: false, 
+            createdAt: serverTimestamp()
           });
         };
         stream.getTracks().forEach(track => track.stop());
       };
       mediaRecorderRef.current.start();
       setIsRecording(true);
-    } catch (err) { alert("Միկրոֆոնի խնդիր:"); }
+    } catch (err) { alert("Միկրոֆոնի խդիր:"); }
   };
 
   const stopRecording = () => { if (mediaRecorderRef.current && isRecording) { mediaRecorderRef.current.stop(); setIsRecording(false); } };
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!newMessage.trim() || !selectedUser || !user) return;
-    const roomId = [user.uid, selectedUser.uid].sort().join("_");
+    if (!newMessage.trim() || !user) return;
+    
+    if (!isGroupChat && !selectedUser) return;
+
+    let targetPath = isGroupChat ? "global_group_room" : [user.uid, selectedUser.uid].sort().join("_");
+
     try {
-      await addDoc(collection(db, "chats", roomId, "messages"), {
-        text: newMessage, senderId: user.uid, seen: false, createdAt: serverTimestamp()
+      await addDoc(collection(db, "chats", targetPath, "messages"), {
+        text: newMessage, 
+        senderId: user.uid, 
+        senderName: user.displayName,
+        senderPhoto: user.photoURL || DEFAULT_AVATAR,
+        seen: false, 
+        createdAt: serverTimestamp()
       });
       setNewMessage("");
     } catch (e) { console.error(e); }
@@ -438,6 +467,8 @@ export default function Chat() {
 
   const handleLogin = async () => { try { await signInWithPopup(auth, googleProvider); } catch (e) { console.error(e); } };
   const handleSignOut = async () => { if (user) { await setDoc(doc(db, "users", user.uid), { status: "offline" }, { merge: true }); } signOut(auth); };
+
+  const activeChatOpen = isGroupChat || selectedUser !== null;
 
   return (
     <>
@@ -516,33 +547,53 @@ export default function Chat() {
                 </div>
               )}
 
-              {/* ՁԱԽ ՄԱՍ — Օգտատերեր */}
-              <div className={`w-full sm:w-[180px] lg:w-[200px] border-r border-gray-200 flex flex-col justify-between bg-gray-50/50 ${selectedUser ? 'hidden sm:flex' : 'flex'} h-full`}>
-                <div className="p-2 overflow-y-auto flex-1">
-                  <h4 className="font-bold text-[11px] text-gray-400 uppercase tracking-wider mb-2">Օգտատերեր ({usersList.length})</h4>
-                  <div className="space-y-1">
-                    {usersList.map((u) => (
-                      <button
-                        key={u.uid}
-                        onClick={() => setSelectedUser(u)}
-                        className={`w-full flex items-center justify-between p-2 rounded-lg text-left transition ${
-                          selectedUser?.uid === u.uid ? "bg-[#007bff] text-white" : "hover:bg-gray-200 text-black"
-                        }`}
-                      >
-                        <div className="flex items-center gap-2 overflow-hidden">
-                          <div className="relative flex-shrink-0">
-                            <img src={u.photoURL || DEFAULT_AVATAR} alt="" className="w-7 h-7 sm:w-6 sm:h-6 rounded-full border object-cover" referrerPolicy="no-referrer" />
-                            <span className={`absolute bottom-0 right-0 w-2 h-2 rounded-full border border-white ${u.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></span>
-                          </div>
-                          <span className="text-xs font-medium truncate max-w-[120px] sm:max-w-[100px]">{u.displayName}</span>
-                        </div>
-                        {unreadCounts[u.uid] > 0 && (
-                          <span className="bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0">{unreadCounts[u.uid]}</span>
-                        )}
-                      </button>
-                    ))}
+              {/* ՁԱԽ ՄԱՍ — Օգտատերեր և Խումբ */}
+              <div className={`w-full sm:w-[180px] lg:w-[200px] border-r border-gray-200 flex flex-col justify-between bg-gray-50/50 ${activeChatOpen ? 'hidden sm:flex' : 'flex'} h-full`}>
+                <div className="p-2 overflow-y-auto flex-1 space-y-3">
+                  
+                  {/* ԽՄԲԱՅԻՆ ՉԱՏԻ ԿՈՃԱԿ */}
+                  <div>
+                    <h4 className="font-bold text-[11px] text-gray-400 uppercase tracking-wider mb-1">Ընդհանուր</h4>
+                    <button
+                      onClick={() => { setIsGroupChat(true); setSelectedUser(null); }}
+                      className={`w-full flex items-center gap-2 p-2 rounded-lg text-left transition ${
+                        isGroupChat ? "bg-[#007bff] text-white" : "hover:bg-gray-200 text-black bg-blue-50/50"
+                      }`}
+                    >
+                      <span className="text-base">👥</span>
+                      <span className="text-xs font-bold truncate">Ընդհանուր Խումբ</span>
+                    </button>
                   </div>
+
+                  {/* ԱՆՁՆԱԿԱՆ ՕԳՏԱՏԵՐԵՐ */}
+                  <div>
+                    <h4 className="font-bold text-[11px] text-gray-400 uppercase tracking-wider mb-1">Օգտատերեր ({usersList.length})</h4>
+                    <div className="space-y-1">
+                      {usersList.map((u) => (
+                        <button
+                          key={u.uid}
+                          onClick={() => { setSelectedUser(u); setIsGroupChat(false); }}
+                          className={`w-full flex items-center justify-between p-2 rounded-lg text-left transition ${
+                            !isGroupChat && selectedUser?.uid === u.uid ? "bg-[#007bff] text-white" : "hover:bg-gray-200 text-black"
+                          }`}
+                        >
+                          <div className="flex items-center gap-2 overflow-hidden">
+                            <div className="relative flex-shrink-0">
+                              <img src={u.photoURL || DEFAULT_AVATAR} alt="" className="w-7 h-7 sm:w-6 sm:h-6 rounded-full border object-cover" referrerPolicy="no-referrer" />
+                              <span className={`absolute bottom-0 right-0 w-2 h-2 rounded-full border border-white ${u.status === "online" ? "bg-green-500" : "bg-gray-400"}`}></span>
+                            </div>
+                            <span className="text-xs font-medium truncate max-w-[120px] sm:max-w-[100px]">{u.displayName}</span>
+                          </div>
+                          {unreadCounts[u.uid] > 0 && (
+                            <span className="bg-blue-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full flex-shrink-0">{unreadCounts[u.uid]}</span>
+                          )}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
                 </div>
+
                 <div className="p-2 border-t bg-white flex items-center justify-between gap-1 flex-shrink-0">
                   <div className="flex items-center gap-1 overflow-hidden">
                     <img src={user.photoURL || DEFAULT_AVATAR} alt="" className="w-6 h-6 rounded-full object-cover" referrerPolicy="no-referrer" />
@@ -552,25 +603,38 @@ export default function Chat() {
                 </div>
               </div>
 
-              {/* ԱՋ ՄԱՍ — Չատ */}
-              <div className={`flex-1 flex flex-col justify-between bg-white h-full ${!selectedUser ? 'hidden sm:flex' : 'flex'}`}>
-                {selectedUser ? (
+              {/* ԱՋ ՄԱՍ — Չատի պատուհան (կամ Խումբ, կամ Անձնական) */}
+              <div className={`flex-1 flex flex-col justify-between bg-white h-full ${!activeChatOpen ? 'hidden sm:flex' : 'flex'}`}>
+                {activeChatOpen ? (
                   <>
                     <div className="p-3 border-b flex items-center justify-between bg-gray-50 flex-shrink-0">
                       <div className="flex items-center gap-2">
                         <button 
-                          onClick={() => setSelectedUser(null)} 
+                          onClick={() => { setSelectedUser(null); setIsGroupChat(false); }} 
                           className="sm:hidden text-[#007bff] font-bold text-sm mr-1 p-1"
                         >
                           ← Վերադառնալ
                         </button>
-                        <img src={selectedUser.photoURL || DEFAULT_AVATAR} alt="" className="w-7 h-7 rounded-full object-cover" referrerPolicy="no-referrer" />
-                        <span className="font-semibold text-xs truncate max-w-[110px] sm:max-w-none">{selectedUser.displayName}</span>
+                        {isGroupChat ? (
+                          <>
+                            <div className="w-7 h-7 rounded-full bg-blue-500 text-white flex items-center justify-center text-xs font-bold">👥</div>
+                            <span className="font-semibold text-xs">Ընդհանուր Խումբ (Բոլորը)</span>
+                          </>
+                        ) : (
+                          <>
+                            <img src={selectedUser?.photoURL || DEFAULT_AVATAR} alt="" className="w-7 h-7 rounded-full object-cover" referrerPolicy="no-referrer" />
+                            <span className="font-semibold text-xs truncate max-w-[110px] sm:max-w-none">{selectedUser?.displayName}</span>
+                          </>
+                        )}
                       </div>
-                      <div className="flex gap-2">
-                        <button onClick={() => startCall("audio")} className="p-1.5 hover:bg-gray-200 rounded-full text-xs">📞</button>
-                        <button onClick={() => startCall("video")} className="p-1.5 hover:bg-gray-200 rounded-full text-xs">📹</button>
-                      </div>
+                      
+                      {/* Անձնական զանգերի կոճակներ (խմբում չեն երևա) */}
+                      {!isGroupChat && (
+                        <div className="flex gap-2">
+                          <button onClick={() => startCall("audio")} className="p-1.5 hover:bg-gray-200 rounded-full text-xs">📞</button>
+                          <button onClick={() => startCall("video")} className="p-1.5 hover:bg-gray-200 rounded-full text-xs">📹</button>
+                        </div>
+                      )}
                     </div>
 
                     {/* ՆԱՄԱԿՆԵՐԻ ՑՈՒՑԱԴՐՈՒՄ */}
@@ -578,43 +642,20 @@ export default function Chat() {
                       {messages.map((msg) => {
                         const isMe = msg.senderId === user.uid;
                         
-                        if (msg.isCallLog) {
-                          const isMissed = msg.callLogType === "missed";
-                          return (
-                            <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
-                              <div className={`flex items-center gap-3 p-3 rounded-[18px] shadow-sm max-w-[75%] min-w-[180px] ${
-                                isMe ? "bg-[#1f2c22] text-white border border-[#2e4233]" : "bg-[#202124] text-white border border-gray-800"
-                              }`}>
-                                <div className="text-xl">
-                                  {msg.mediaType === "video" ? "📹" : "📞"}
-                                </div>
-                                <div className="flex-1 flex flex-col">
-                                  <span className="text-xs font-semibold">
-                                    {msg.mediaType === "video" ? "Video Call" : "Incoming Call"}
-                                  </span>
-                                  <div className="flex items-center gap-1 text-[11px] mt-0.5">
-                                    {isMissed ? (
-                                      <>
-                                        <span className="text-red-500 font-bold">↑ </span>
-                                        <span className="text-red-400 font-medium">Missed</span>
-                                      </>
-                                    ) : (
-                                      <>
-                                        <span className="text-green-500 font-bold">↗ </span>
-                                        <span className="text-gray-400">{msg.duration}</span>
-                                      </>
-                                    )}
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        }
-
                         return (
-                          <div key={msg.id} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
-                            <div className={`p-2 rounded-xl text-xs max-w-[80%] break-words shadow-sm ${isMe ? "bg-[#007bff] text-white" : "bg-gray-200 text-black"}`}>
-                              {msg.audio ? <VoicePlayer audioUrl={msg.audio} isMe={isMe} /> : msg.text}
+                          <div key={msg.id} className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}>
+                            {/* Եթե խումբ է և ուրիշն է գրել, ցույց տալ նրա անունը վերևում */}
+                            {isGroupChat && !isMe && (
+                              <span className="text-[10px] text-gray-500 ml-1 mb-0.5 font-semibold">{msg.senderName || "Անանուն"}</span>
+                            )}
+                            
+                            <div className={`flex items-end gap-1.5 max-w-[80%]`}>
+                              {isGroupChat && !isMe && (
+                                <img src={msg.senderPhoto || DEFAULT_AVATAR} alt="" className="w-5 h-5 rounded-full object-cover flex-shrink-0 mb-1" />
+                              )}
+                              <div className={`p-2 rounded-xl text-xs break-words shadow-sm ${isMe ? "bg-[#007bff] text-white" : "bg-gray-200 text-black"}`}>
+                                {msg.audio ? <VoicePlayer audioUrl={msg.audio} isMe={isMe} /> : msg.text}
+                              </div>
                             </div>
                           </div>
                         );
@@ -625,7 +666,7 @@ export default function Chat() {
                     <form onSubmit={handleSendMessage} className="p-2 border-t flex gap-1 items-center bg-white flex-shrink-0">
                       <input
                         type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
-                        placeholder={isRecording ? "Ձայնագրվում է..." : "Գրեք նամակ..."} disabled={isRecording}
+                        placeholder={isRecording ? "Ձայնագրվում է..." : "Գրեք խմբին կամ նամակ..."} disabled={isRecording}
                         className="flex-1 border border-gray-200 p-2 rounded-md text-xs outline-none focus:border-blue-500"
                       />
                       <button type="button" onClick={isRecording ? stopRecording : startRecording} className={`p-2 rounded-md text-xs ${isRecording ? "bg-red-500 text-white animate-pulse" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
@@ -636,7 +677,7 @@ export default function Chat() {
                   </>
                 ) : (
                   <div className="flex-1 flex items-center justify-center text-gray-400 text-xs p-4 text-center bg-[#f4f4f7]">
-                    Ընտրեք օգտատեր ձախ ցուցակից՝ չատը սկսելու համար:
+                    Ընտրեք Ընդհանուր Խումբը կամ որևէ օգտատեր ձախ ցուցակից՝ շփումը սկսելու համար:
                   </div>
                 )}
               </div>
