@@ -1,29 +1,58 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { db } from "../../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի կառուցվածքի
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 const NewsThreeCards = () => {
-  const cards = [
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const initialCards = [
     {
-      id: 1,
       category: "Բանկային",
       title: "Գործարքների արգելափակում 1 կոճակով",
       date: "01.06.2026",
       image: "https://www.evoca.am/images-cache/news/1/17852444643548/438x328.png",
     },
     {
-      id: 2,
       category: "Բանկային",
       title: "ESG կառավարման համակարգը Evocabank-ում",
       date: "31.03.2026",
       image: "https://www.evoca.am/images-cache/news/1/17757342882486/438x328.png",
     },
     {
-      id: 3,
       category: "Բանկային",
       title: "Evocabank-ը միացել է AmCham Armenia-ին",
       date: "10.02.2026",
       image: "https://www.evoca.am/images-cache/news/1/17707319421286/438x328.png",
     },
   ];
+
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const colRef = collection(db, "news_three_cards");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          for (const card of initialCards) {
+            await addDoc(colRef, card);
+          }
+          const newSnapshot = await getDocs(colRef);
+          setCards(newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        } else {
+          setCards(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCards();
+  }, []);
+
+  if (loading) return null;
 
   return (
     <div className="max-w-[1440px] mx-auto px-4 md:px-10 py-8">
