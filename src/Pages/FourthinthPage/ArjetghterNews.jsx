@@ -1,29 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from "../../firebase";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 const ArjetghterNews = () => {
-  const newsList = [
+  const [newsList, setNewsList] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const initialNews = [
     {
-      id: 1,
       image: "https://www.evoca.am/images-cache/news/1/17864472573391/439x320.png",
       tag: "Բանկային",
       title: "Հայաստանում գործարկվեց Firebird AI-ի «ԱԲ գործարանը»",
       date: "11.08.2026"
     },
     {
-      id: 2,
       image: "https://www.evoca.am/images-cache/news/1/17854167235525/439x320.png",
       tag: "Բանկային",
       title: "Evocabank-ը և Green Rock-ը մեկնարկեցին Բանկի նոր...",
       date: "30.07.2026"
     },
     {
-      id: 3,
       image: "https://www.evoca.am/images-cache/news/1/17852444643548/439x320.png",
       tag: "Բանկային",
       title: "Գործարքների արգելափակում 1 կոճակով",
       date: "01.06.2026"
     }
   ];
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const colRef = collection(db, "arjetghterNews");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          for (const item of initialNews) {
+            await addDoc(colRef, item);
+          }
+          const newSnapshot = await getDocs(colRef);
+          setNewsList(newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        } else {
+          setNewsList(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  if (loading) return <div className="text-center py-20">Բեռնվում է...</div>;
 
   return (
     <div className="w-full font-['MontserratARM',sans-serif] py-16 px-4 md:px-10 bg-[#f0f7fe]">
