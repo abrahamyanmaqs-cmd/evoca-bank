@@ -1,22 +1,53 @@
- import React, { useState } from 'react';
-
-const testimonials = [
-  {
-    id: 1,
-    quote: "Բանկ, որ իր ռեբրենդինգի շքեղ միջոցառումով ու աշխատանքային ձևաչափով բանկային ոլորտում ամրապնդեց որակ և ճաշակ թելադրեց: Evocabank-ն առաջին իսկ վայրկյանից ստիպեց նորովի և ժամանակակից...",
-    author: "Կամո Թովմասյան",
-    title: "KAMOBOG մեդիա-հարթակի հիմնադիր, influencer"
-  },
-  {
-    id: 2,
-    quote: "Հիանալի սպասարկում և նորարարական լուծումներ, որոնք զգալիորեն հեշտացնում են ամենօրյա ֆինանսական գործարքները:",
-    author: "Էլեն Վարդանյան",
-    title: "Հաճախորդ"
-  }
-];
+import React, { useState, useEffect } from 'react';
+import { db } from "../../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի տեղադրության
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 export default function TestimonialSectionn() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const initialTestimonials = [
+    {
+      quote: "Բանկ, որ իր ռեբրենդինգի շքեղ միջոցառումով ու աշխատանքային ձևաչափով բանկային ոլորտում ամրապնդեց որակ և ճաշակ թելադրեց: Evocabank-ն առաջին իսկ վայրկյանից ստիպեց նորովի և ժամանակակից...",
+      author: "Կամո Թովմասյան",
+      title: "KAMOBOG մեդիա-հարթակի հիմնադիր, influencer"
+    },
+    {
+      quote: "Հիանալի սպասարկում և նորարարական լուծումներ, որոնք զգալիորեն հեշտացնում են ամենօրյա ֆինանսական գործարքները:",
+      author: "Էլեն Վարդանյան",
+      title: "Հաճախորդ"
+    }
+  ];
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const colRef = collection(db, "testimonials");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          for (const item of initialTestimonials) {
+            await addDoc(colRef, item);
+          }
+          const newSnapshot = await getDocs(colRef);
+          setTestimonials(newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        } else {
+          setTestimonials(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  if (loading || testimonials.length === 0) {
+    return <div className="text-center py-28">Բեռնվում է...</div>;
+  }
 
   return (
     <>
