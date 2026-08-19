@@ -1,31 +1,63 @@
-import React from 'react';
+ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-
-const newsItems = [
-  {
-    id: 1,
-    category: "Բանկային",
-    title: "Հայաստանում գործարկվեց Firebird AI-ի «ԱԲ գործարանը»",
-    image: "https://www.evoca.am/images-cache/news/1/17864472573391/439x320.png",
-    link: "/news"
-  },
-  {
-    id: 2,
-    category: "Բանկային",
-    title: "Evocabank-ը և Green Rock-ը մեկնարկեցին Բանկի նոր...",
-    image: "https://www.evoca.am/images-cache/news/1/17854167235525/439x320.png",
-    link: "/news"
-  },
-  {
-    id: 3,
-    category: "Բանկային",
-    title: "Գործարքների արգելափակում 1 կոճակով",
-    image: "https://www.evoca.am/images-cache/news/1/17852444643548/439x320.png",
-    link: "/news"
-  }
-];
+import { db } from "../../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի տեղադրության
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 export default function NewsSection() {
+  const [newsItems, setNewsItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const initialNews = [
+    {
+      category: "Բանկային",
+      title: "Հայաստանում գործարկվեց Firebird AI-ի «ԱԲ գործարանը»",
+      image: "https://www.evoca.am/images-cache/news/1/17864472573391/439x320.png",
+      link: "/news"
+    },
+    {
+      category: "Բանկային",
+      title: "Evocabank-ը և Green Rock-ը մեկնարկեցին Բանկի նոր...",
+      image: "https://www.evoca.am/images-cache/news/1/17854167235525/439x320.png",
+      link: "/news"
+    },
+    {
+      category: "Բանկային",
+      title: "Գործարքների արգելափակում 1 կոճակով",
+      image: "https://www.evoca.am/images-cache/news/1/17852444643548/439x320.png",
+      link: "/news"
+    }
+  ];
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const colRef = collection(db, "news");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          // Եթե դատարկ է, ավելացնում ենք սկզբնական նորությունները Firebase-ում
+          for (const item of initialNews) {
+            await addDoc(colRef, item);
+          }
+          const newSnapshot = await getDocs(colRef);
+          setNewsItems(newSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        } else {
+          setNewsItems(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNews();
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-16">Բեռնվում է նորությունները...</div>;
+  }
+
   return (
     <section className="bg-white py-12 md:py-16 px-4 sm:px-6 md:px-16 w-full select-none">
       <div className="max-w-[1300px] mx-auto w-full">
