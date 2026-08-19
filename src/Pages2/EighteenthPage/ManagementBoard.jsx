@@ -1,58 +1,90 @@
-import React, { useState } from 'react';
-
-const managementMembers = [
-  {
-    id: 1,
-    name: "ԿԱՐԵՆ ԵՂԻԱԶԱՐՅԱՆ, MBA, PhD",
-    role: "Վարչության նախագահ",
-    image: "https://www.evoca.am/images-cache/team_members/1/1660202833495/230x230.png"
-  },
-  {
-    id: 2,
-    name: "ԱՐՄԵՆ ՀԱԿՈԲՅԱՆ, PhD",
-    role: "Վարչության նախագահի առաջին տեղակալ",
-    image: "https://www.evoca.am/images-cache/team_members/1/16602027630068/230x230.png"
-  },
-  {
-    id: 3,
-    name: "ՏԱԹԵՎԻԿ ԽԱՉԱՏՐՅԱՆ, MBA, PMP",
-    role: "Վարչության նախագահի տեղակալ",
-    image: "https://www.evoca.am/images-cache/team_members/1/16602030244095/230x230.png"
-  },
-  {
-    id: 4,
-    name: "ՀԱՅԿ ՊԵՏՐՈՍՅԱՆ",
-    role: "Վարչության նախագահի տեղակալ",
-    image: "https://www.evoca.am/images-cache/team_members/1/16602028118681/230x230.png"
-  },
-  {
-    id: 5,
-    name: "ԼԻԼԻԹ ԳԱԲՈՅԱՆ, MBA",
-    role: "Վարչության նախագահի տեղակալ ֆինանսական գծով",
-    image: "https://www.evoca.am/images-cache/team_members/1/16602028538342/230x230.png"
-  },
-  {
-    id: 6,
-    name: "ԷՄՄԱ ԶԱՆԻՆՅԱՆ, MBA, PhD, FCCA",
-    role: "Վարչության անդամ, Գլխավոր հաշվապահ",
-    image: "https://www.evoca.am/images-cache/team_members/1/16602027917723/230x230.png"
-  },
-  {
-    id: 7,
-    name: "ՍՄԲԱՏ ՄԱՐՏԻՐՈՍՅԱՆ",
-    role: "Վարչության անդամ, Իրավաբանական վարչության պետ",
-    image: "https://www.evoca.am/images-cache/team_members/1/16602029763987/230x230.png"
-  },
-  {
-    id: 8,
-    name: "ՄՀԵՐ ՍԱՀԱԿՅԱՆ",
-    role: "Վարչության անդամ, Ծրագրավորման և գործառնական համակարգերի վարչության պետ",
-    image: "https://www.evoca.am/images-cache/team_members/1/16602028738374/230x230.png"
-  }
-];
+import React, { useState, useEffect } from 'react';
+import { db } from "../../firebase"; // Ճշգրտիր ուղին ըստ քո նախագծի
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 
 export default function ManagementBoard() {
   const [hoveredId, setHoveredId] = useState(null);
+  const [managementMembers, setManagementMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Սկզբնական տվյալներ (եթե Firebase-ում դատարկ է)
+  const defaultMembers = [
+    {
+      id: "1",
+      name: "ԿԱՐԵՆ ԵՂԻԱԶԱՐՅԱՆ, MBA, PhD",
+      role: "Վարչության նախագահ",
+      image: "https://www.evoca.am/images-cache/team_members/1/1660202833495/230x230.png"
+    },
+    {
+      id: "2",
+      name: "ԱՐՄԵՆ ՀԱԿՈԲՅԱՆ, PhD",
+      role: "Վարչության նախագահի առաջին տեղակալ",
+      image: "https://www.evoca.am/images-cache/team_members/1/16602027630068/230x230.png"
+    },
+    {
+      id: "3",
+      name: "ՏԱԹԵՎԻԿ ԽԱՉԱՏՐՅԱՆ, MBA, PMP",
+      role: "Վարչության նախագահի տեղակալ",
+      image: "https://www.evoca.am/images-cache/team_members/1/16602030244095/230x230.png"
+    },
+    {
+      id: "4",
+      name: "ՀԱՅԿ ՊԵՏՐՈՍՅԱՆ",
+      role: "Վարչության նախագահի տեղակալ",
+      image: "https://www.evoca.am/images-cache/team_members/1/16602028118681/230x230.png"
+    },
+    {
+      id: "5",
+      name: "ԼԻԼԻԹ ԳԱԲՈՅԱՆ, MBA",
+      role: "Վարչության նախագահի տեղակալ ֆինանսական գծով",
+      image: "https://www.evoca.am/images-cache/team_members/1/16602028538342/230x230.png"
+    },
+    {
+      id: "6",
+      name: "ԷՄՄԱ ԶԱՆԻՆՅԱՆ, MBA, PhD, FCCA",
+      role: "Վարչության անդամ, Գլխավոր հաշվապահ",
+      image: "https://www.evoca.am/images-cache/team_members/1/16602027917723/230x230.png"
+    },
+    {
+      id: "7",
+      name: "ՍՄԲԱՏ ՄԱՐՏԻՐՈՍՅԱՆ",
+      role: "Վարչության անդամ, Իրավաբանական վարչության պետ",
+      image: "https://www.evoca.am/images-cache/team_members/1/16602029763987/230x230.png"
+    },
+    {
+      id: "8",
+      name: "ՄՀԵՐ ՍԱՀԱԿՅԱՆ",
+      role: "Վարչության անդամ, Ծրագրավորման և գործառնական համակարգերի վարչության պետ",
+      image: "https://www.evoca.am/images-cache/team_members/1/16602028738374/230x230.png"
+    }
+  ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const colRef = collection(db, "management_board_members");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          // Եթե հավաքածուն դատարկ է, լրացնում ենք default տվյալներով
+          for (const member of defaultMembers) {
+            await setDoc(doc(colRef, member.id), member);
+          }
+          setManagementMembers(defaultMembers);
+        } else {
+          setManagementMembers(snapshot.docs.map(doc => doc.data()));
+        }
+      } catch (error) {
+        console.error("Firebase error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return null;
 
   return (
     <section className="w-full py-10 px-4 md:px-16 bg-white font-sans select-none">
