@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
+import { db } from "../../../firebase";
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 export default function CurrencyAndBranchesSection() {
   const [activeTab, setActiveTab] = useState('cash');
+  const [ratesData, setRatesData] = useState({
+    cash: [],
+    cashless: [],
+    gold: [],
+    ruble: []
+  });
+  const [loading, setLoading] = useState(true);
 
-  const ratesData = {
+  const initialRates = {
     cash: [
       { currency: 'USD', name: 'ԱՄՆ դոլար', buy: '363', sell: '368.5', flag: '🇺🇸' },
       { currency: 'EUR', name: 'Եվրո', buy: '415', sell: '426', flag: '🇪🇺' },
@@ -23,6 +32,34 @@ export default function CurrencyAndBranchesSection() {
     ]
   };
 
+  useEffect(() => {
+    const fetchRates = async () => {
+      try {
+        const colRef = collection(db, "currencyRates");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          // Եթե դատարկ է, պահպանում ենք սկզբնական օբյեկտը որպես առանձին փաստաթուղթ կամ ըստ տիպերի
+          await addDoc(colRef, initialRates);
+          setRatesData(initialRates);
+        } else {
+          // Վերցնում ենք առաջին իսկ փաստաթուղթը, որտեղ պահված են տվյալները
+          setRatesData(snapshot.docs[0].data());
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRates();
+  }, []);
+
+  if (loading) return <div className="text-center py-20">Բեռնվում է փոխարժեքները...</div>;
+
+  const currentTabRates = ratesData[activeTab] || [];
+
   return (
     <section className="w-full bg-white py-8 md:py-20 px-2 sm:px-4 md:px-16 font-montserrat select-none overflow-hidden">
       <div className="max-w-[1440px] w-full mx-auto">
@@ -38,7 +75,7 @@ export default function CurrencyAndBranchesSection() {
           {/* ՁԱԽ ՄԱՍ՝ Փոխարժեքներ և Հաշվիչ */}
           <div className="lg:col-span-8 bg-white rounded-[20px] md:rounded-[32px] border border-gray-100 shadow-sm p-3 sm:p-6 md:p-8 w-full overflow-hidden">
             
-            {/* Տաբեր - Լիարժեք հորիզոնական սքրոլով փոքր էկրանների համար */}
+            {/* Տաբեր */}
             <div className="flex items-center gap-3 sm:gap-6 border-b border-gray-100 pb-3 mb-4 md:mb-8 overflow-x-auto scrollbar-none">
               {['cash', 'cashless', 'gold', 'ruble'].map((tabKey) => {
                 const labels = { cash: 'Կանխիկ', cashless: 'Անկանխիկ', gold: 'Ոսկու փոխարժեք', ruble: 'Ռուբլու կանխիկ մուտք' };
@@ -67,7 +104,7 @@ export default function CurrencyAndBranchesSection() {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-gray-50">
-                    {ratesData[activeTab].map((item, idx) => (
+                    {currentTabRates.map((item, idx) => (
                       <tr key={idx} className="hover:bg-gray-50/50 transition-colors">
                         <td className="py-2.5 sm:py-3 md:py-4 flex items-center gap-2">
                           <span className="text-lg sm:text-xl md:text-2xl">{item.flag}</span>
@@ -157,11 +194,12 @@ export default function CurrencyAndBranchesSection() {
             </div>
 
             <Link 
-  to="/usersmap" 
-  className="w-full bg-[#F2EEFF] text-[#5E1EEB] hover:bg-[#5E1EEB] hover:text-white font-bold text-xs md:text-sm py-3 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-xs cursor-pointer no-underline">
-  <span>Դիտել քարտեզը</span>
-  <span className="text-base">›</span>
-</Link>
+              to="/usersmap" 
+              className="w-full bg-[#F2EEFF] text-[#5E1EEB] hover:bg-[#5E1EEB] hover:text-white font-bold text-xs md:text-sm py-3 px-6 rounded-full transition-all duration-300 flex items-center justify-center gap-2 shadow-xs cursor-pointer no-underline"
+            >
+              <span>Դիտել քարտեզը</span>
+              <span className="text-base">›</span>
+            </Link>
 
           </div>
 
