@@ -1,52 +1,84 @@
-import React, { useState } from 'react';
-
-const teamMembers = [
-  {
-    id: 1,
-    name: "ՎԱՐՈՒԺԱՆ ԱՎԵՏԻՔՅԱՆ, LL.M., MPA",
-    role: "Խորհրդի նախագահ",
-    image: "https://www.evoca.am/images-cache/team_members/1/16776012013335/230x230.png"
-  },
-  {
-    id: 2,
-    name: "ՄԱՐՏԱ ԷԶԱՌՐԻ",
-    role: "Խորհրդի անդամ, Աուդիտ կոմիտեի անդամ, Ռազմավարության կոմիտեի անդամ",
-    image: "https://www.evoca.am/images-cache/team_members/1/17544805530896/230x230.png"
-  },
-  {
-    id: 3,
-    name: "ՎԱԶԳԵՆ ԳԵՎՈՐԳՅԱՆ, MBA, PhD",
-    role: "Խորհրդի անդամ, Ռազմավարության կոմիտեի նախագահ",
-    image: "https://www.evoca.am/images-cache/team_members/1/17550915579199/230x230.png"
-  },
-  {
-    id: 4,
-    name: "ՄԱՐԻՆԱ ԲՈՒԿԻ, MBA",
-    role: "Խորհրդի անդամ Աուդիտ կոմիտեի նախագահ, Ռազմավարության կոմիտեի անդամ",
-    image: "https://www.evoca.am/images-cache/team_members/1/17544805642771/230x230.png"
-  },
-  {
-    id: 5,
-    name: "ԽՈՍԵ ՄԱՐԻԱ ՄՈՐԵՆՈ ԴԵ ԲԱՐՐԵԳԱ, LL.M., MBA, PhD",
-    role: "Խորհրդի անդամ, Ռիսկերի և համապատասխանության կոմիտեի նախագահ, Ռազմավարության կոմիտեի անդամ",
-    image: "https://www.evoca.am/images-cache/team_members/1/1675080847328/230x230.png"
-  },
-  {
-    id: 6,
-    name: "ՏԱԹԵՎԻԿ ԶԱՆՈՅԱՆ, MBA",
-    role: "Խորհրդի անդամ, Աուդիտ կոմիտեի անդամ, Ռիսկերի և համապատասխանության կոմիտեի անդամ",
-    image: "https://www.evoca.am/images-cache/team_members/1/16602030046225/230x230.png"
-  },
-  {
-    id: 7,
-    name: "ՊԻԵՐ ԿԱԶԻՅԱԿ, MBA",
-    role: "Խորհրդի անդամ, Ռիսկերի և համապատասխանության կոմիտեի անդամ, Ռազմավարության կոմիտեի անդամ",
-    image: "https://www.evoca.am/images-cache/team_members/1/17544805424545/230x230.png"
-  }
-];
+import React, { useState, useEffect } from 'react';
+import { db } from "../../firebase"; // Ճշգրտիր ուղին ըստ քո նախագծի
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 
 export default function TeamSection() {
   const [hoveredId, setHoveredId] = useState(null);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // Սկզբնական տվյալներ (եթե Firebase-ում դատարկ է)
+  const defaultMembers = [
+    {
+      id: "1",
+      name: "ՎԱՐՈՒԺԱՆ ԱՎԵՏԻՔՅԱՆ, LL.M., MPA",
+      role: "Խորհրդի նախագահ",
+      image: "https://www.evoca.am/images-cache/team_members/1/16776012013335/230x230.png"
+    },
+    {
+      id: "2",
+      name: "ՄԱՐՏԱ ԷԶԱՌՐԻ",
+      role: "Խորհրդի անդամ, Աուդիտ կոմիտեի անդամ, Ռազմավարության կոմիտեի անդամ",
+      image: "https://www.evoca.am/images-cache/team_members/1/17544805530896/230x230.png"
+    },
+    {
+      id: "3",
+      name: "ՎԱԶԳԵՆ ԳԵՎՈՐԳՅԱՆ, MBA, PhD",
+      role: "Խորհրդի անդամ, Ռազմավարության կոմիտեի նախագահ",
+      image: "https://www.evoca.am/images-cache/team_members/1/17550915579199/230x230.png"
+    },
+    {
+      id: "4",
+      name: "ՄԱՐԻՆԱ ԲՈՒԿԻ, MBA",
+      role: "Խորհրդի անդամ Աուդիտ կոմիտեի նախագահ, Ռազմավարության կոմիտեի անդամ",
+      image: "https://www.evoca.am/images-cache/team_members/1/17544805642771/230x230.png"
+    },
+    {
+      id: "5",
+      name: "ԽՈՍԵ ՄԱՐԻԱ ՄՈՐԵՆՈ ԴԵ ԲԱՐՐԵԳԱ, LL.M., MBA, PhD",
+      role: "Խորհրդի անդամ, Ռիսկերի և համապատասխանության կոմիտեի նախագահ, Ռազմավարության կոմիտեի անդամ",
+      image: "https://www.evoca.am/images-cache/team_members/1/1675080847328/230x230.png"
+    },
+    {
+      id: "6",
+      name: "ՏԱԹԵՎԻԿ ԶԱՆՈՅԱՆ, MBA",
+      role: "Խորհրդի անդամ, Աուդիտ կոմիտեի անդամ, Ռիսկերի և համապատասխանության կոմիտեի անդամ",
+      image: "https://www.evoca.am/images-cache/team_members/1/16602030046225/230x230.png"
+    },
+    {
+      id: "7",
+      name: "ՊԻԵՐ ԿԱԶԻՅԱԿ, MBA",
+      role: "Խորհրդի անդամ, Ռիսկերի և համապատասխանության կոմիտեի անդամ, Ռազմավարության կոմիտեի անդամ",
+      image: "https://www.evoca.am/images-cache/team_members/1/17544805424545/230x230.png"
+    }
+  ];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const colRef = collection(db, "board_members");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          // Եթե հավաքածուն դատարկ է, լրացնում ենք default տվյալներով
+          for (const member of defaultMembers) {
+            await setDoc(doc(colRef, member.id), member);
+          }
+          setTeamMembers(defaultMembers);
+        } else {
+          setTeamMembers(snapshot.docs.map(doc => doc.data()));
+        }
+      } catch (error) {
+        console.error("Firebase error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return null;
 
   return (
     <section className="w-full py-10 px-4 md:px-16 bg-white font-sans select-none">
