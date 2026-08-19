@@ -1,11 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from "../../firebase"; // Ճշգրտիր ուղին
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const TransferMain = () => {
-  const transferData = {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const defaultData = {
     title: "Դրամական փոխանցումներ",
     description: "Իրականացնում ենք դրամական փոխանցումներ Հայաստանի տարածքում և դեպի արտերկիր՝ դրամով և արտարժույթով: Փոխանցումներն իրականացվում են միջազգային բանկային ստանդարտներին համապատասխանող համակարգերով:",
     image: "https://www.evoca.am/images-cache/menu/1/16115828343472/780x585.jpg"
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const docRef = doc(db, "transfer_main_content", "info");
+        const docSnap = await getDoc(docRef);
+
+        if (docSnap.exists()) {
+          setData(docSnap.data());
+        } else {
+          // Եթե տվյալներ չկան, ստեղծում ենք default-ը
+          await setDoc(docRef, defaultData);
+          setData(defaultData);
+        }
+      } catch (error) {
+        console.error("Firebase error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading || !data) return null;
 
   return (
     <div className="w-full bg-[#F8F9FA] font-sans py-12 px-4 md:px-10">
@@ -15,21 +45,18 @@ const TransferMain = () => {
           {/* Տեքստային մաս */}
           <div className="w-full lg:w-1/2 flex flex-col justify-center">
             <h2 className="text-[32px] md:text-[40px] font-black text-[#1C1C1E] mb-6 tracking-tight">
-              {transferData.title}
+              {data.title}
             </h2>
             <p className="text-[#6B7280] text-[16px] md:text-[17px] leading-relaxed mb-8">
-              {transferData.description}
+              {data.description}
             </p>
-            <div>
-               
-            </div>
           </div>
 
           {/* Նկար */}
           <div className="w-full lg:w-1/2 flex-shrink-0">
             <img 
-              src={transferData.image} 
-              alt={transferData.title} 
+              src={data.image} 
+              alt={data.title} 
               className="w-full h-auto object-cover rounded-2xl shadow-sm"
             />
           </div>
