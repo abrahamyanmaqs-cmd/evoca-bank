@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db } from "../../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի կառուցվածքի
+import { db } from "../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի կառուցվածքի
 import { doc, getDoc, setDoc } from "firebase/firestore";
 
 const EvocaTouchHero = () => {

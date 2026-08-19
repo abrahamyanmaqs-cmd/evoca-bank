@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { db } from "../../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի տեղադրության
+import { db } from "../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի տեղադրության
 import { collection, getDocs, addDoc } from "firebase/firestore";
 
 export default function TestimonialSectionn() {

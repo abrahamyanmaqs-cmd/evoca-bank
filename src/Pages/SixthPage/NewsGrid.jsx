@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { db } from "../../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի կառուցվածքի
+import { db } from "../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի կառուցվածքի
 import { collection, getDocs, addDoc, query, orderBy } from "firebase/firestore";
 
 const NewsGrid = () => {
