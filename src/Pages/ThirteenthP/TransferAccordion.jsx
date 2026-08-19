@@ -1,10 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { db } from "../../firebase"; // Ճշգրտիր ուղին ըստ քո նախագծի
+import { collection, getDocs, setDoc, doc } from "firebase/firestore";
 
 const TransferAccordion = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const [accordionItems, setAccordionItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const accordionItems = [
+  // Սկզբնական տվյալները (եթե Firebase-ում ոչինչ չկա)
+  const defaultItems = [
     {
+      id: "1",
       title: "Փոխանցումներ դրամով",
       content: [
         "Մեզ մոտ գործող վճարահաշվարկային համակարգն ապահովում է արագ և հուսալի դրամային փոխանցումներ ինչպես մեր համակարգում, այնպես էլ հայաստանյան այլ բանկերի միջև։",
@@ -12,6 +18,7 @@ const TransferAccordion = () => {
       ]
     },
     {
+      id: "2",
       title: "Միջազգային փոխանցումներ",
       content: [
         "Մենք SWIFT համակարգի անդամ ենք և ձեր արտարժույթային միջազգային փոխանցումներն իրականացնում ենք այս համակարգով: Այն ապահովում է արագ և անվտանգ փոխանցումներ՝ միջազգային բանկային ստանդարտներին համապատասխան։",
@@ -22,6 +29,7 @@ const TransferAccordion = () => {
       ]
     },
     {
+      id: "3",
       title: "Վճարային համակարգեր",
       content: [
         "Դրամական փոխանցումների վճարային համակարգերը հնարավորություն են տալիս շատ արագ՝ առանց բանկային հաշվի բացման, պարզեցված ընթացակարգով, ոչ առևտրային բնույթի փոխանցումներ կատարել ֆիզիկական անձանց միջև՝ դեպի աշխարհի տարբեր երկրներ։",
@@ -29,6 +37,7 @@ const TransferAccordion = () => {
       ]
     },
     {
+      id: "4",
       title: "Փոխանցման պայմանների փոփոխություն կամ չեղյալացում",
       content: [
         "Փոխանցումների վավերապայմանների փոփոխումը կամ փոխանցման չեղյալացումը կատարում ենք փոխանցումը նախաձեռնող անձի գրավոր դիմումի հիման վրա՝ նրանից գանձելով միջնորդավճարներ (սակագներին կարող եք ծանոթանալ Բանկային փոխանցումներ բաժնում)։",
@@ -40,14 +49,39 @@ const TransferAccordion = () => {
     }
   ];
 
+  useEffect(() => {
+    const getData = async () => {
+      try {
+        const colRef = collection(db, "transfer_accordion");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          // Եթե դատարկ է, գրում ենք Firebase-ի մեջ
+          for (const item of defaultItems) {
+            await setDoc(doc(colRef, item.id), item);
+          }
+          setAccordionItems(defaultItems);
+        } else {
+          setAccordionItems(snapshot.docs.map(doc => doc.data()));
+        }
+      } catch (error) {
+        console.error("Firebase error:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    getData();
+  }, []);
+
   const toggleAccordion = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
+  if (loading) return <div className="py-20 text-center">Բեռնվում է...</div>;
+
   return (
     <div className="w-full bg-[#F8F9FA] font-['MontserratARM',sans-serif] py-12 px-4 md:px-10">
       <div className="max-w-[1440px] mx-auto">
-        
         <h2 className="text-[28px] md:text-[36px] font-black text-[#1C1C1E] mb-8 tracking-tight">
           ԱՆՀՐԱԺԵՇՏ ՏԵՂԵԿԱՏՎՈՒԹՅՈՒՆ
         </h2>
@@ -70,7 +104,6 @@ const TransferAccordion = () => {
                     {item.title}
                   </span>
                   
-                  {/* Կլոր կոճակով սլաք */}
                   <div className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-300 flex-shrink-0 ${
                     isOpen ? 'bg-[#5E1EEB] text-white rotate-180' : 'bg-[#F3F0FD] text-[#5E1EEB]'
                   }`}>
@@ -102,7 +135,6 @@ const TransferAccordion = () => {
             );
           })}
         </div>
-
       </div>
     </div>
   );
