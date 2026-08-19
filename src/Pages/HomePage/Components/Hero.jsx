@@ -1,92 +1,126 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; // Ներմուծում ենք Link-ը
-
-const slides = [
-  {
-    title: "Evoca Travel Card",
-    description: "Այս քարտն իր բազմաթիվ առավելություններով կդառնա քո ճամփորդական անբաժան ընկերը",
-    buttonText: "Իմանալ ավելին",
-    link: "/about-card", // Ավելացված link
-    bgColor: "bg-[#DADADA]",
-    textColor: "text-[#333333]",
-    image: "https://www.evoca.am/images-cache/sliders/1/17480089224912/4012c7541d8db15b5666bb0e4f4bdf7a-576x486.png"
-  },
-  {
-    title: "Evoca Աշխատավարձային նախագիծ",
-    description: "Բեր աշխատավարձդ Evoca: Տար շատ ավելին...",
-    buttonText: "Իմանալ ավելին",
-    link: "/salary-project", 
-    bgColor: "bg-[#6539AA]",
-    textColor: "text-white",
-    image: "https://www.evoca.am/images-cache/sliders/1/17740137222872/7152cafab4609e8483a365f79ecf04cb-577x486.png"
-  },
-  // ... մնացած սլայդերը նույն կերպ կարող ես լրացնել link դաշտով
-  {
-    title: "Կարճ հեռախոսահամար՝ 8444",
-    description: "Բարի գալուստ, Evocabank: Մենք սպասում ենք ձեր զանգին...",
-    buttonText: "Իմանալ ավելին",
-    link: "/contact",
-    bgColor: "bg-[#000000]",
-    textColor: "text-white",
-    image: "https://www.evoca.am/images-cache/sliders/1/17612202124044/b74e87ec0e83aa10cb128d41f0ada026-577x486.png"
-  },
-  {
-    title: "Visa Vision",
-    description: "Ձեռք բեր Visa Vision քարտ քո նախընտրած գույնով, դիզայնով ու ոճով և օգտվիր բազմաթիվ առավելություններից",
-    buttonText: "Իմանալ ավելին",
-    link: "/visa-vision",
-    bgColor: "bg-[#27292B]",
-    textColor: "text-white",
-    image: "https://www.evoca.am/images-cache/sliders/1/16856146843579/345dd727d7ee28e2cd6ec180e5d65740-577x486.jpg"
-  },
-  {
-    title: "Visa Infinite",
-    description: "Ձեռք բեր Visa վճարային համակարգի ամենաբարձր դասի քարտը հենց հիմա",
-    buttonText: "Իմանալ ավելին",
-    link: "/visa-infinite",
-    bgColor: "bg-[#000000]",
-    textColor: "text-white",
-    image: "https://www.evoca.am/images-cache/sliders/1/17737433784078/126c54e244e880fd563d8af43979486c-577x485.png"
-  },
-  {
-    title: "Հիփոթեքային վարկեր Evocabank-ում՝ ամենահարմար պայմաններով",
-    description: "Ձեռք բեր քո երազանքի բնակարանը՝ ցածր տոկոսադրույքով:",
-    buttonText: "Իմանալ ավելին",
-    link: "/mortgage",
-    bgColor: "bg-[#E4DFFF]",
-    textColor: "text-[#333333]",
-    image: "https://www.evoca.am/images-cache/sliders/1/16178035964191/79381d3e68fdf7ec25c5837a19ce5821-577x486.jpg"
-  },
-  {
-    title: "UnionPay Gold",
-    description: "Ամբողջ աշխարհում քո արագ և հարմար վճարումների ուղեկիցը",
-    buttonText: "Իմանալ ավելին",
-    link: "/unionpay",
-    bgColor: "bg-[#B6A44F]",
-    textColor: "text-[#333333]",
-    image: "https://www.evoca.am/images-cache/sliders/1/17262130779724/2fee1054871280f57daf5204f901c563-577x486.png"
-  },
-  {
-    title: "Օնլայն ավանդ EvocaTOUCH հավելվածով",
-    description: "Դի'ր ավանդ Evocabank-ում բարձր, շա՜տ բարձր տոկոսներով:",
-    buttonText: "Ծանոթանալ պայմաններին",
-    link: "/deposits",
-    bgColor: "bg-[#FFDCFB]",
-    textColor: "text-[#333333]",
-    image: "https://www.evoca.am/images-cache/sliders/1/16178037539626/79381d3e68fdf7ec25c5837a19ce5821-577x486.jpg"
-  }
-];
+import { Link } from 'react-router-dom';
+import { db } from "../../../firebase"; // Ճշգրիր ուղին ըստ քո ֆայլի տեղադրության
+import { collection, getDocs, addDoc } from "firebase/firestore";
 
 export default function Hero() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [slides, setSlides] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const initialSlides = [
+    {
+      title: "Evoca Travel Card",
+      description: "Այս քարտն իր բազմաթիվ առավելություններով կդառնա քո ճամփորդական անբաժան ընկերը",
+      buttonText: "Իմանալ ավելին",
+      link: "/about-card",
+      bgColor: "bg-[#DADADA]",
+      textColor: "text-[#333333]",
+      image: "https://www.evoca.am/images-cache/sliders/1/17480089224912/4012c7541d8db15b5666bb0e4f4bdf7a-576x486.png"
+    },
+    {
+      title: "Evoca Աշխատավարձային նախագիծ",
+      description: "Բեր աշխատավարձդ Evoca: Տար շատ ավելին...",
+      buttonText: "Իմանալ ավելին",
+      link: "/salary-project", 
+      bgColor: "bg-[#6539AA]",
+      textColor: "text-white",
+      image: "https://www.evoca.am/images-cache/sliders/1/17740137222872/7152cafab4609e8483a365f79ecf04cb-577x486.png"
+    },
+    {
+      title: "Կարճ հեռախոսահամար՝ 8444",
+      description: "Բարի գալուստ, Evocabank: Մենք սպասում ենք ձեր զանգին...",
+      buttonText: "Իմանալ ավելին",
+      link: "/contact",
+      bgColor: "bg-[#000000]",
+      textColor: "text-white",
+      image: "https://www.evoca.am/images-cache/sliders/1/17612202124044/b74e87ec0e83aa10cb128d41f0ada026-577x486.png"
+    },
+    {
+      title: "Visa Vision",
+      description: "Ձեռք բեր Visa Vision քարտ քո նախընտրած գույնով, դիզայնով ու ոճով և օգտվիր բազմաթիվ առավելություններից",
+      buttonText: "Իմանալ ավելին",
+      link: "/visa-vision",
+      bgColor: "bg-[#27292B]",
+      textColor: "text-white",
+      image: "https://www.evoca.am/images-cache/sliders/1/16856146843579/345dd727d7ee28e2cd6ec180e5d65740-577x486.jpg"
+    },
+    {
+      title: "Visa Infinite",
+      description: "Ձեռք բեր Visa վճարային համակարգի ամենաբարձր դասի քարտը հենց հիմա",
+      buttonText: "Իմանալ ավելին",
+      link: "/visa-infinite",
+      bgColor: "bg-[#000000]",
+      textColor: "text-white",
+      image: "https://www.evoca.am/images-cache/sliders/1/17737433784078/126c54e244e880fd563d8af43979486c-577x485.png"
+    },
+    {
+      title: "Հիփոթեքային վարկեր Evocabank-ում՝ ամենահարմար պայմաններով",
+      description: "Ձեռք բեր քո երազանքի բնակարանը՝ ցածր տոկոսադրույքով:",
+      buttonText: "Իմանալ ավելին",
+      link: "/mortgage",
+      bgColor: "bg-[#E4DFFF]",
+      textColor: "text-[#333333]",
+      image: "https://www.evoca.am/images-cache/sliders/1/16178035964191/79381d3e68fdf7ec25c5837a19ce5821-577x486.jpg"
+    },
+    {
+      title: "UnionPay Gold",
+      description: "Ամբողջ աշխարհում քո արագ և հարմար վճարումների ուղեկիցը",
+      buttonText: "Իմանալ ավելին",
+      link: "/unionpay",
+      bgColor: "bg-[#B6A44F]",
+      textColor: "text-[#333333]",
+      image: "https://www.evoca.am/images-cache/sliders/1/17262130779724/2fee1054871280f57daf5204f901c563-577x486.png"
+    },
+    {
+      title: "Օնլայն ավանդ EvocaTOUCH հավելվածով",
+      description: "Դի'ր ավանդ Evocabank-ում բարձր, շա՜տ բարձր տոկոսներով:",
+      buttonText: "Ծանոթանալ պայմաններին",
+      link: "/deposits",
+      bgColor: "bg-[#FFDCFB]",
+      textColor: "text-[#333333]",
+      image: "https://www.evoca.am/images-cache/sliders/1/16178037539626/79381d3e68fdf7ec25c5837a19ce5821-577x486.jpg"
+    }
+  ];
+
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const colRef = collection(db, "heroSlides");
+        const snapshot = await getDocs(colRef);
+
+        if (snapshot.empty) {
+          // Եթե դատարկ է, ավելացնում ենք բոլոր սլայդերը Firebase-ում
+          for (const slide of initialSlides) {
+            await addDoc(colRef, slide);
+          }
+          const newSnapshot = await getDocs(colRef);
+          setSlides(newSnapshot.docs.map(doc => doc.data()));
+        } else {
+          setSlides(snapshot.docs.map(doc => doc.data()));
+        }
+      } catch (error) {
+        console.error("Սխալ Firebase-ի հետ:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSlides();
+  }, []);
 
   const nextSlide = () => setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   const prevSlide = () => setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
 
   useEffect(() => {
+    if (slides.length === 0) return;
     const timer = setInterval(nextSlide, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [slides.length]);
+
+  if (loading || slides.length === 0) {
+    return <div className="text-center py-32">Բեռնվում է...</div>;
+  }
 
   const current = slides[currentIndex];
 
@@ -103,7 +137,7 @@ export default function Hero() {
           </p>
           <div className="pt-2 flex justify-center lg:justify-start">
             <Link
-              to={current.link} // Ավելացված link-ը
+              to={current.link}
               className="bg-[rgb(100,0,220)] hover:bg-[rgb(85,0,190)] text-white font-semibold px-6 py-2.5 md:px-8 md:py-3.5 rounded-full shadow-md transition-all duration-300 inline-flex items-center justify-center text-xs sm:text-sm md:text-base"
             >
               {current.buttonText}
