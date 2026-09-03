@@ -44,6 +44,7 @@ import News from "./Pages/SixthPage/News";
 import Blog from "./Pages/SeventPage/Blog";
 import Career from "./Pages/EigthinPage/Carier";
 import Individualss from "./Pages/NinthPage/Individualss";
+import EvocaSubCategories from "./Pages/SixtyinPage/EvocaSubCategories";
 import Cardss from "./Pages/TenthPage/Cardss";
 import Avandner from "./Pages/EleventhPage/Avandner";  
 import Acount from "./Pages/TvelfthPage/Acounts";
@@ -63,6 +64,7 @@ function App() {
           <Route path="individuals" element={<Individuals />} />
           <Route path="business" element={<Business />} />
           <Route path="payments" element={<Payment />} />
+          <Route path="payments/1" element={<EvocaSubCategories />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="management" element={<Managment />} />
           <Route path="shareholders" element={<Shareholders />} />
