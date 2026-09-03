@@ -52,6 +52,7 @@ import Transfers from "./Pages/ThirteenthP/ Transfers";
 import Arjetghter from "./Pages/FourthinthPage/Arjetghter";
 import EvocaSALARY from "./Pages/FiftheenthPage/EvocaSALARY";
 import EvocaTouch from "./Pages/SixtheenthPage/EvocaTouch";
+import UtilitySubCategories from "./Pages/UtilitySubCategories";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -66,6 +67,7 @@ function App() {
           <Route path="payments" element={<Payment />} />
           <Route path="payments/1" element={<EvocaSubCategories />} />
           <Route path="about" element={<AboutUs />} />
+          <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
           <Route path="shareholders" element={<Shareholders />} />
           <Route path="reports" element={<Hasvetvutyunner />} />
