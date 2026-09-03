@@ -55,6 +55,7 @@ import EvocaTouch from "./Pages/SixtheenthPage/EvocaTouch";
 import UtilitySubCategories from "./Pages/UtilitySubCategories";
 import LoanSubCategories from "./Pages/LoanSubCategories";
 import RoadPoliceSubCategories from "./Pages/RoadPoliceSubCategories";
+import InternetTvSubCategories from "./Pages/InternetTvSubCategories";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -70,6 +71,7 @@ function App() {
           <Route path="payments/1" element={<EvocaSubCategories />} />
           <Route path="payments/6" element={<LoanSubCategories />} />
           <Route path="payments/5" element={<RoadPoliceSubCategories />} />
+          <Route path="payments/4" element={<InternetTvSubCategories />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
