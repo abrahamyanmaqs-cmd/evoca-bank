@@ -57,6 +57,7 @@ import LoanSubCategories from "./Pages/LoanSubCategories";
 import RoadPoliceSubCategories from "./Pages/RoadPoliceSubCategories";
 import InternetTvSubCategories from "./Pages/InternetTvSubCategories";
 import InternationalMobileSubCategories from "./Pages/InternationalMobileSubCategories";
+import EventsSubCategories from "./Pages/EventsSubCategories";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -74,6 +75,7 @@ function App() {
           <Route path="payments/5" element={<RoadPoliceSubCategories />} />
           <Route path="payments/4" element={<InternetTvSubCategories />} />
           <Route path="payments/2" element={<InternationalMobileSubCategories />} />
+          <Route path="payments/7" element={<EventsSubCategories />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
