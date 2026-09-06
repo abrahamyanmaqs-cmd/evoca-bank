@@ -78,6 +78,7 @@ import RoadPoliceCamerasPayment from "./Pages/84page/RoadPoliceCamerasPayment";
 import GoodlinePayment from "./Pages/85page/GoodlinePayment";
 import YotaPayment from "./Pages/86page/YotaPayment";
 import GeorgianOperators from "./Pages/87page/GeorgianOperators";
+import GeocellPayment from "./Pages/88page/GeocellPayment";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -116,6 +117,7 @@ function App() {
                 <Route path="/payments/international/goodline" element={<GoodlinePayment />} />
                 <Route path="/payments/international/yota" element={<YotaPayment />} />
                 <Route path="/payments/international/georgian" element={<GeorgianOperators />} />
+                <Route path="/payments/international/georgian/geocell" element={<GeocellPayment />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
