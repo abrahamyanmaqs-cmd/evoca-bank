@@ -11,7 +11,7 @@ export default function GeorgianOperators() {
       path: '/payments/international/georgian/geocell',
     },
     {
-      name: 'Մագթի Բանի',
+      name: 'Մագթի',
       logoUrl: 'https://resource.evoca.am/images/webPayment/magti.png',
       path: '/payments/international/georgian/magti',
     },
