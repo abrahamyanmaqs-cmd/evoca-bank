@@ -69,6 +69,7 @@ import LandlinePayment1 from "./Pages/75page/LandlinePayment1";
 import ElectricityPayment from "./Pages/76page/ElectricityPayment";
 import WaterPayment from "./Pages/77page/WaterPayment";
 import GasConsumptionPayment from "./Pages/78page/GasConsumptionPayment";
+import GasServicePayment from "./Pages/79page/GasServicePayment";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -98,6 +99,7 @@ function App() {
             <Route path="/payments/utility/electricity" element={<ElectricityPayment />} />
             <Route path="/payments/utility/water" element={<WaterPayment />} />
             <Route path="/payments/utility/gas-consumption" element={<GasConsumptionPayment />} />
+            <Route path="/payments/utility/gas-service" element={<GasServicePayment />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
