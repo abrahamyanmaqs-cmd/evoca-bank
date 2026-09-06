@@ -81,6 +81,7 @@ import GeorgianOperators from "./Pages/87page/GeorgianOperators";
 import GeocellPayment from "./Pages/88page/GeocellPayment";
 import MagtiPayment from "./Pages/89page/MagtiPayment";
 import RussianOperators from "./Pages/90page/RussianOperators";
+import BeelineRussiaPayment from "./Pages/91page/BeelineRussiaPayment";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -122,6 +123,7 @@ function App() {
                 <Route path="/payments/international/georgian/geocell" element={<GeocellPayment />} />
                 <Route path="/payments/international/georgian/magti" element={<MagtiPayment />} />
                 <Route path="/payments/international/russian" element={<RussianOperators />} />
+                <Route path="/payments/international/russian/beeline" element={<BeelineRussiaPayment />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
