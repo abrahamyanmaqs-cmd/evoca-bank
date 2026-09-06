@@ -86,6 +86,7 @@ import HyperNetPayment from "./Pages/92page/HyperNetPayment";
 import TeamInternetPayment from "./Pages/93page/TeamInternetPayment";
 import VivaCellInternetPayment from "./Pages/94page/VivaCellInternetPayment";
 import RostelecomPayment from "./Pages/95page/RostelecomPayment";
+import InteractiveTvPayment from "./Pages/96page/InteractiveTvPayment";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -130,11 +131,11 @@ function App() {
                 <Route path="/payments/international/russian/beeline" element={<BeelineRussiaPayment />} />
                 <Route path="/payments/internet-tv/hypernet" element={<HyperNetPayment />} />
                 <Route path="/payments/internet-tv/team-internet" element={<  TeamInternetPayment />} />
-                    <Route path="/payments/internet-tv/vivacell-internet" element={<   VivaCellInternetPayment/>} />
-                   
-           <Route path="/payments/internet-tv/rostelecom" element={<RostelecomPayment/>} />
+                <Route path="/payments/internet-tv/vivacell-internet" element={<   VivaCellInternetPayment/>} />
+                <Route path="/payments/internet-tv/rostelecom" element={<RostelecomPayment/>} />
+                <Route path="/payments/internet-tv/interactive-tv" element={<InteractiveTvPayment/>} />
+                
 
- 
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
