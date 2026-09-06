@@ -67,6 +67,7 @@ import UtilityPhoneSubCategories from "./Pages/73page/UtilityPhoneSubCategories"
 import LandlinePayment from "./Pages/74page/LandlinePayment";
 import LandlinePayment1 from "./Pages/75page/LandlinePayment1";
 import ElectricityPayment from "./Pages/76page/ElectricityPayment";
+import WaterPayment from "./Pages/77page/WaterPayment";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -94,6 +95,7 @@ function App() {
             <Route path="/payments/utility/phone/landline" element={<LandlinePayment />} />
             <Route path="/payments/utility/phone/karabakh-telecom-landline" element={<LandlinePayment1 />} />
             <Route path="/payments/utility/electricity" element={<ElectricityPayment />} />
+            <Route path="/payments/utility/water" element={<WaterPayment />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
