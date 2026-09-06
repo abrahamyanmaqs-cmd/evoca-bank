@@ -76,6 +76,7 @@ import BlessLoanPayment2 from "./Pages/82page/BlessLoanPayment2";
 import BlessLoanPayment3 from "./Pages/83page/BlessLoanPayment3";
 import RoadPoliceCamerasPayment from "./Pages/84page/RoadPoliceCamerasPayment";
 import GoodlinePayment from "./Pages/85page/GoodlinePayment";
+import YotaPayment from "./Pages/86page/YotaPayment";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -112,6 +113,7 @@ function App() {
                 <Route path="/payments/loans/micro-capital" element={<BlessLoanPayment3 />} />
                 <Route path="/payments/road-police/cameras" element={<RoadPoliceCamerasPayment />} />
                 <Route path="/payments/international/goodline" element={<GoodlinePayment />} />
+                <Route path="/payments/international/yota" element={<YotaPayment />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
