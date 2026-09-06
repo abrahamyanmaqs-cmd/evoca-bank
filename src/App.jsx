@@ -71,6 +71,7 @@ import WaterPayment from "./Pages/77page/WaterPayment";
 import GasConsumptionPayment from "./Pages/78page/GasConsumptionPayment";
 import GasServicePayment from "./Pages/79page/GasServicePayment";
 import BlessLoanPayment from "./Pages/80page/BlessLoanPayment";
+import BlessLoanPayment1 from "./Pages/81page/BlessLoanPayment1";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -102,6 +103,7 @@ function App() {
             <Route path="/payments/utility/gas-consumption" element={<GasConsumptionPayment />} />
             <Route path="/payments/utility/gas-service" element={<GasServicePayment />} />
             <Route path="/payments/loans/bless" element={<BlessLoanPayment />} />
+              <Route path="/payments/loans/premium-credit" element={<BlessLoanPayment1 />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
