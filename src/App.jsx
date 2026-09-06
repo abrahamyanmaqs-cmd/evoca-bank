@@ -90,6 +90,7 @@ import InteractiveTvPayment from "./Pages/96page/InteractiveTvPayment";
 import CtvPayment from "./Pages/97page/CtvPayment";
 import YournetPayment from "./Pages/98page/YournetPayment";
 import ArpinetPayment from "./Pages/99page/ArpinetPayment";
+import KtInternetPayment from "./Pages/100page/KtInternetPayment";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -140,6 +141,7 @@ function App() {
                 <Route path="/payments/internet-tv/ctv" element={<  CtvPayment/>} />
                   <Route path="/payments/internet-tv/yournet" element={< YournetPayment/>} />
                   <Route path="/payments/internet-tv/arpinet" element={< ArpinetPayment/>} /> 
+                  <Route path="/payments/internet-tv/karabakh-telecom" element={< KtInternetPayment/>} /> 
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
