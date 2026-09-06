@@ -62,6 +62,7 @@ import LoanRepaymentSubCategories from "./Pages/68page/LoanRepaymentSubCategorie
 import AccountTopup from "./Pages/69page/AccountTopup";
 import AccountTopup1 from "./Pages/70page/AccountTopup1";
 import LoanEarlyRepayment from "./Pages/71Page/LoanEarlyRepayment";
+import LoanEarlyRepayment2 from "./Pages/72page/LoanEarlyRepay2";
 import Layout from "./Components/Layout"; 
  
 function App() {
@@ -84,6 +85,7 @@ function App() {
           <Route path="/payments/evoca/2" element={<AccountTopup />} />
             <Route path="/payments/evoca/3" element={<AccountTopup1 />} />
             <Route path="/payments/evoca/1/early-repayment" element={<LoanEarlyRepayment />} />
+            <Route path="/payments/evoca/1/regular-repayment" element={<LoanEarlyRepayment2 />} />
           <Route path="about" element={<AboutUs />} />
           <Route path="payments/3" element={<UtilitySubCategories />} />
           <Route path="management" element={<Managment />} />
