@@ -5,13 +5,6 @@ import { collection, addDoc } from "firebase/firestore";
 const CareerHero = () => {
   const [activeTab, setActiveTab] = useState("Մշակույթ");
 
-  const navItems = [
-    "Մշակույթ",
-    "Առավելություններ",
-    "Հաճախ տրվող հարցեր",
-    "Ինչպես ընդունվել աշխատանքի Evocabank-ում",
-  ];
-
   const heroData = {
     title: "Մշակույթ",
     description:
@@ -32,25 +25,6 @@ const CareerHero = () => {
 
   return (
     <div className="w-full">
-      {/* Վերին մանուշակագույն մենյու */}
-      <div className="bg-[#5E1EEB] w-full py-4 px-4 md:px-10">
-        <div className="max-w-[1440px] mx-auto flex items-center gap-8 overflow-x-auto scrollbar-none">
-          {navItems.map((item) => (
-            <button
-              key={item}
-              onClick={() => setActiveTab(item)}
-              className={`text-[15px] font-medium whitespace-nowrap transition-colors duration-200 outline-none cursor-pointer pb-1 ${
-                activeTab === item
-                  ? "text-white border-b-2 border-white font-semibold"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Hero Section - ամբողջ լայնությամբ */}
       <div className="w-full relative min-h-[500px] md:min-h-[600px] flex items-end">
         {/* Ետեւի ֆոնային նկար - ամբողջ լայնությամբ */}
